@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Email, ValidationError
 from wtforms.fields.html5 import EmailField, TelField
 from app.models import User
@@ -21,7 +21,8 @@ class RegistrationForm(FlaskForm):
     email = EmailField('Email:', validators=[DataRequired(), Email()])
     address = TextAreaField('Address:', validators=[DataRequired()])
     password = PasswordField('Password:', validators=[DataRequired()])
-    password2 = PasswordField('Repeat Password:', validators=[DataRequired(), EqualTo('password')])
+    password2 = PasswordField('Repeat Password:', validators=[
+        DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
     def validate_email(self, email):
@@ -32,8 +33,9 @@ class RegistrationForm(FlaskForm):
     def validate_aadhar_card(self, aadhar_card):
         user = User.query.filter_by(aadhar_card=aadhar_card.data).first()
         if user is not None:
-            raise ValidationError('Sorry! This aadhar number is already in use.')
-    
+            raise ValidationError('''
+        Sorry! This aadhar number is already in use.''')
+
     def validate_phone_number(self, phone_number):
         user = User.query.filter_by(phone_number=phone_number.data).first()
         if user is not None:
