@@ -8,9 +8,14 @@ def load_user(id):
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    phone_number = db.Column(db.String(10), index=True, unique=True)
+    firstname = db.Column(db.String(64))
+    middlename = db.Column(db.String(64))
+    lastname = db.Column(db.String(64))
     email = db.Column(db.String(128), index=True, unique=True)
+    aadhar_card = db.Column(db.String(12), index=True, unique=True)
+    phone_number = db.Column(db.String(10), index=True, unique=True)
+    confirmed = db.Column(db.Boolean, default=True)
+    address = db.Column(db.String(512))
     password_hash = db.Column(db.String(128))
 
     def set_password(self, password):
