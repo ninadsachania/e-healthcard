@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, EqualTo
 from wtforms.fields.html5 import EmailField, TelField
 
 
@@ -12,9 +12,14 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
-    name = StringField(u'Username:', validators=[DataRequired()])
-    aadhar_number = IntegerField(u'Aadhar Card:', validators=[DataRequired()])
-    address = TextAreaField(u'Address:', validators=[DataRequired()])
-    phone_number = TelField(u'Phone Number:', validators=[DataRequired()])
-    email = EmailField(u'Email:', validators=[DataRequired()])
-    submit = SubmitField(u'Reigster')
+    firstname = StringField('Firstname:', validators=[DataRequired()])
+    middlename = StringField('Middlename:', validators=[DataRequired()])
+    lastname = StringField('Lastname:', validators=[DataRequired()])
+    aadhar_card = StringField('Aadhar Card:', validators=[DataRequired()])
+    phone_number = TelField('Phone Number:', validators=[DataRequired()])
+    email = EmailField('Email:', validators=[DataRequired()])
+    address = TextAreaField('Address:', validators=[DataRequired()])
+    password = PasswordField('Password:', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password:', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
+    

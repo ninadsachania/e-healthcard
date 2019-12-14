@@ -6,39 +6,52 @@
     {{ form.hidden_tag() }}
     <table>
         <tr>
-            <td>{{ form.name.label }}</td>
-            <td>{{ form.name(size=32, autofocus=True) }}</td>
+            <td>{{ form.firstname.label }}</td>
+            <td>{{ form.firstname(size=32, autofocus=True) }}</td>
         </tr>
         <tr>
             <td></td>
             <td>
-                {% for error in form.name.errors %}
+                {% for error in form.firstname.errors %}
                 <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </td>
         </tr>
 
         <tr>
-            <td>{{ form.aadhar_number.label }}</td>
-            <td>{{ form.aadhar_number(size=32) }}</td>
+            <td>{{ form.middlename.label }}</td>
+            <td>{{ form.middlename(size=32) }}</td>
         </tr>
         <tr>
             <td></td>
             <td>
-                {% for error in form.aadhar_number.errors %}
+                {% for error in form.middlename.errors %}
                 <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </td>
         </tr>
 
         <tr>
-            <td>{{ form.address.label }}</td>
-            <td>{{ form.address(size=32, cols="30", rows="5") }}</td>
+            <td>{{ form.lastname.label }}</td>
+            <td>{{ form.lastname(size=32) }}</td>
         </tr>
         <tr>
             <td></td>
             <td>
-                {% for error in form.address.errors %}
+                {% for error in form.lastname.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.aadhar_card.label }}</td>
+            <td>{{ form.aadhar_card(size=32, maxlength="12") }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.aadhar_card.errors %}
                 <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </td>
@@ -65,6 +78,45 @@
             <td></td>
             <td>
                 {% for error in form.email.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.address.label }}</td>
+            <td>{{ form.address(size=32, cols="30", rows="5") }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.address.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.password.label }}</td>
+            <td>{{ form.password(size=32) }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.password.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.password2.label }}</td>
+            <td>{{ form.password2(size=32) }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.password2.errors %}
                 <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </td>
