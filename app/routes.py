@@ -16,7 +16,12 @@ def login():
     form = LoginForm()
     
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.username.data).first()
+
+        if len(form.username.data) == 10:
+            user = User.query.filter_by(phone_number=form.username.data).first()
+        else:
+            user = User.query.filter_by(email=form.username.data).first()
+
         if user is None or not user.check_password(form.password.data):
             flash('Invalid email or password!')
             return redirect(url_for('login'))
