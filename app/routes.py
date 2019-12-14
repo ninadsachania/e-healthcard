@@ -1,8 +1,9 @@
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template, flash, redirect, url_for, request
 from app import app
 from app.forms import LoginForm, RegistrationForm
 from app.models import User
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
+from werkzeug.urls import url_parse
 
 @app.route('/index')
 @app.route('/')
@@ -26,9 +27,19 @@ def login():
             flash('Invalid email or password!')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
+
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            # 'netloc' is the first level domain (www.example.com)
+            return redirect(url_for('index')) 
+        return redirect(next_page)
 
     return render_template('login.html', form=form, title="Login")
+
+@app.route('/home')
+@login_required
+def home():
+    return render_template('home.html', title='Homepage')
 
 @app.route('/logout')
 def logout():
