@@ -23,6 +23,7 @@
         <a href="{{ url_for('register') }}">Register</a>
         {% else %}
         <a href="{{ url_for('logout') }}">Logout</a>
+        <a href="{{ url_for('account') }}">Account Details</a>
         {% endif %}
     </div>
     {% with messages = get_flashed_messages() %}

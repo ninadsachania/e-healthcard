@@ -36,10 +36,10 @@ def login():
 
     return render_template('login.html', form=form, title="Login")
 
-@app.route('/home')
+@app.route('/user/account')
 @login_required
-def home():
-    return render_template('home.html', title='Homepage')
+def account():
+    return render_template('account.html', title='Account')
 
 @app.route('/logout')
 def logout():
@@ -56,7 +56,7 @@ def register():
         user = User(
             firstname=form.firstname.data,
             middlename=form.middlename.data,
-            lastname=form.middlename.data,
+            lastname=form.lastname.data,
             email=form.email.data,
             aadhar_card=form.aadhar_card.data,
             phone_number=form.phone_number.data,
