@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Login In</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <table>
+        <tr>
+            <td>{{ form.username.label }}</td>
+            <td>{{ form.username(size=32, autofocus=True) }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.username.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.password.label }}</td>
+            <td>{{ form.password(size=32) }}</td>
+        </tr>
+        <tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.password.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+    </tr>
+
+        <tr>
+            <td>{{ form.remember_me() }}</td>
+            <td>{{ form.remember_me.label }}</td>
+        </tr>
+
+        <tr>
+            <td>{{ form.submit() }}</td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

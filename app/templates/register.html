@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Register</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <table>
+        <tr>
+            <td>{{ form.name.label }}</td>
+            <td>{{ form.name(size=32, autofocus=True) }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.name.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.aadhar_number.label }}</td>
+            <td>{{ form.aadhar_number(size=32) }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.aadhar_number.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.address.label }}</td>
+            <td>{{ form.address(size=32, cols="30", rows="5") }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.address.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.phone_number.label }}</td>
+            <td>{{ form.phone_number(size=32, maxlength="10") }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.phone_number.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.email.label }}</td>
+            <td>{{ form.email(size=32) }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.email.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.submit() }}</td>
+        </tr>
+    </table>
+</form>
+{% endblock %}
