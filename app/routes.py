@@ -39,10 +39,10 @@ def login():
     return render_template('login.html', form=form, title="Login")
 
 
-@app.route('/user/account')
+@app.route('/user/profile')
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    return render_template('account.html', title='Profile')
 
 
 @app.route('/logout')
