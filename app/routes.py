@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm
 from app.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -76,6 +76,37 @@ def register():
         return redirect(url_for('index'))
 
     return render_template('register.html', form=form, title="Registration")
+
+
+@app.route('/user/edit', methods=['POST', 'GET'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+
+    if form.validate_on_submit():
+        # TODO: Inefficient?
+        current_user.firstname = form.firstname.data
+        current_user.middlename = form.middlename.data
+        current_user.lastname = form.lastname.data
+        current_user.aadhar_card = form.aadhar_card.data
+        current_user.phone_number = form.phone_number.data
+        current_user.email = form.email.data
+        current_user.address = form.address.data
+        db.session.commit()
+        flash('Your changes have been updated!')
+
+        return redirect(url_for('edit_profile'))
+
+    elif request.method == 'GET':
+        form.firstname.data = current_user.firstname
+        form.middlename.data = current_user.middlename
+        form.lastname.data = current_user.lastname
+        form.aadhar_card.data = current_user.aadhar_card
+        form.phone_number.data = current_user.phone_number
+        form.email.data = current_user.email
+        form.address.data = current_user.address
+
+    return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 
 if __name__ == '__main__':

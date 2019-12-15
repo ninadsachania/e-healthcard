@@ -40,3 +40,14 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(phone_number=phone_number.data).first()
         if user is not None:
             raise ValidationError('Sorry! This phone number is already in use.')
+
+
+class EditProfileForm(FlaskForm):
+    firstname = StringField('Firstname:', validators=[DataRequired()])
+    middlename = StringField('Middlename:', validators=[DataRequired()])
+    lastname = StringField('Lastname:', validators=[DataRequired()])
+    aadhar_card = StringField('Aadhar Card:', validators=[DataRequired()])
+    phone_number = TelField('Phone Number:', validators=[DataRequired()])
+    email = EmailField('Email:', validators=[DataRequired(), Email()])
+    address = TextAreaField('Address:', validators=[DataRequired()])
+    submit = SubmitField('Update')
