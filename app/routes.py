@@ -110,6 +110,7 @@ def edit_profile():
 
 
 @app.route('/user/changepw', methods=['POST', 'GET'])
+@login_required
 def change_password():
     form = PasswordResetForm()
 
