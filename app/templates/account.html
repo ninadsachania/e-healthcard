@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Details</h1>
-<table border=1>
+<h1>Details:</h1>
+<table>
+    <tr>
+        <td colspan="2"><img src="{{ current_user.avatar() }}"></td>
+    </tr>
     <tr>
         <td>Firstname: </td>
         <td>{{ current_user.firstname }}</td>
