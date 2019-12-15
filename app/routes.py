@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, PasswordResetForm
 from app.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -107,6 +107,23 @@ def edit_profile():
         form.address.data = current_user.address
 
     return render_template('edit_profile.html', title='Edit Profile', form=form)
+
+
+@app.route('/user/changepw', methods=['POST', 'GET'])
+def change_password():
+    form = PasswordResetForm()
+
+    if form.validate_on_submit():
+        if current_user.check_password(form.current_password.data):
+            current_user.set_password(form.new_password.data)
+            db.session.commit()
+            flash('Congratulations! Password successfully changed.')
+            return redirect(url_for('change_password'))
+
+        flash('Current password incorrent. Please try again.')
+        return redirect(url_for('change_password'))
+
+    return render_template('change_password.html', title="Change Password", form=form)
 
 
 if __name__ == '__main__':

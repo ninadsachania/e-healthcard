@@ -51,3 +51,10 @@ class EditProfileForm(FlaskForm):
     email = EmailField('Email:', validators=[DataRequired(), Email()])
     address = TextAreaField('Address:', validators=[DataRequired()])
     submit = SubmitField('Update')
+
+
+class PasswordResetForm(FlaskForm):
+    current_password = PasswordField('Current Password:', validators=[
+        DataRequired()])
+    new_password = PasswordField('New Password:', validators=[DataRequired()])
+    submit = SubmitField('Change')
