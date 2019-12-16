@@ -37,3 +37,16 @@ class User(UserMixin, db.Model):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         url = 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'
         return url.format(digest, size)
+
+
+class StaticInformation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    gender = db.Column(db.String(16), nullable=False)
+    dob = db.Column(db.DateTime, nullable=False)
+    emergency_contact = db.Column(db.String(10), nullable=False)
+    height = db.Column(db.Integer, nullable=True)
+    weight = db.Column(db.Float, nullable=True)
+    bloodgroup = db.Column(db.String(3), nullable=False)
+    allergies = db.Column(db.String(512), nullable=True)
+    current_medication = db.Column(db.String(512), nullable=True)

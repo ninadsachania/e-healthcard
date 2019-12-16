@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, EqualTo, Email, ValidationError
-from wtforms.fields.html5 import EmailField, TelField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, \
+    SelectField, IntegerField
+from wtforms.validators import DataRequired, EqualTo, Email, ValidationError, Length
+from wtforms.fields.html5 import EmailField, TelField, DateField
 from app.models import User
 
 
@@ -58,3 +59,16 @@ class PasswordResetForm(FlaskForm):
         DataRequired()])
     new_password = PasswordField('New Password:', validators=[DataRequired()])
     submit = SubmitField('Change')
+
+
+class StaticInformationForm(FlaskForm):
+    gender = SelectField('Gender:', choices=[('Male', 'Male'), ('Female', 'Female')], validators=[DataRequired()])
+    dob = DateField('Date of Birth:', validators=[DataRequired()])
+    emergency_contact = StringField('Emergency Contact:', validators=[
+        DataRequired(), Length(min=10, max=10, message="Length should be 10")])
+    height = StringField('Height (in cm):')
+    weight = StringField('Weight (in kg):')
+    bloodgroup = StringField('Bloodgroup:', validators=[DataRequired()])
+    allergies = TextAreaField('Allergies:')
+    current_medication = TextAreaField('Current Medication:')
+    submit = SubmitField('Update')

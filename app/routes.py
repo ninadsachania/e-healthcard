@@ -1,7 +1,8 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, PasswordResetForm
-from app.models import User
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, PasswordResetForm, \
+    StaticInformationForm
+from app.models import User, StaticInformation
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
@@ -125,6 +126,74 @@ def change_password():
         return redirect(url_for('change_password'))
 
     return render_template('change_password.html', title="Change Password", form=form)
+
+
+@app.route('/user/information')
+@login_required
+def medical_information():
+    return render_template('medical_information.html', title='Medical Information')
+
+
+@app.route('/user/static_info')
+@login_required
+def static_info():
+    info = StaticInformation.query.filter_by(id=current_user.id).first()
+    return render_template('static_info.html', title='Static Information', info=info)
+
+
+@app.route('/user/edit_static_info', methods=['POST', 'GET'])
+@login_required
+def edit_static_info():
+    # TODO: Cleanup & better representation of data
+    form = StaticInformationForm()
+
+    if form.validate_on_submit():
+        current_info = StaticInformation.query.filter_by(id=current_user.id).first()
+
+        if current_info:
+            current_info.dob = form.dob.data
+            current_info.gender = form.gender.data
+            current_info.emergency_contact = form.emergency_contact.data
+            current_info.height = form.height.data
+            current_info.weight = form.weight.data
+            current_info.bloodgroup = form.bloodgroup.data
+            current_info.allergies = form.allergies.data
+            current_info.current_medication = form.current_medication.data
+            db.session.commit()
+
+            flash('Information updated!')
+        else:
+            info = StaticInformation(
+                user_id=current_user.id,
+                gender=form.gender.data,
+                dob=form.dob.data,
+                emergency_contact=form.emergency_contact.data,
+                height=form.height.data,
+                weight=form.weight.data,
+                bloodgroup=form.bloodgroup.data,
+                allergies=form.allergies.data,
+                current_medication=form.current_medication.data
+            )
+            db.session.add(info)
+            db.session.commit()
+
+            flash('Information created!')
+
+        return redirect(url_for('static_info'))
+    elif request.method == 'GET':
+        current_info = StaticInformation.query.filter_by(id=current_user.id).first()
+
+        if current_info:
+            form.dob.data = current_info.dob
+            form.gender.data = current_info.gender
+            form.emergency_contact.data = current_info.emergency_contact
+            form.height.data = current_info.height
+            form.weight.data = current_info.weight
+            form.bloodgroup.data = current_info.bloodgroup
+            form.allergies.data = current_info.allergies
+            form.current_medication.data = current_info.current_medication
+
+    return render_template('edit_static_info.html', title='Edit Static Information', form=form)
 
 
 if __name__ == '__main__':
