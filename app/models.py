@@ -2,6 +2,7 @@ from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
+from datetime import datetime
 
 
 @login.user_loader
@@ -50,3 +51,15 @@ class StaticInformation(db.Model):
     bloodgroup = db.Column(db.String(3), nullable=False)
     allergies = db.Column(db.String(512), nullable=True)
     current_medication = db.Column(db.String(512), nullable=True)
+
+
+class Metadata(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    last_logged_in = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    last_modified_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    static_info_last_modified_on = db.Column(
+        db.DateTime,
+        nullable=True,
+    )

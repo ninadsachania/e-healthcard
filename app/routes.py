@@ -2,9 +2,10 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PasswordResetForm, \
     StaticInformationForm
-from app.models import User, StaticInformation
+from app.models import User, StaticInformation, Metadata
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
+from datetime import datetime
 
 
 @app.route('/index')
@@ -29,6 +30,13 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid email or password!')
             return redirect(url_for('login'))
+
+        m = Metadata.query.filter_by(id=user.id).first()
+        m.last_logged_in = datetime.utcnow()
+
+        db.session.add(m)
+        db.session.commit()
+
         login_user(user, remember=form.remember_me.data)
 
         next_page = request.args.get('next')
@@ -68,9 +76,14 @@ def register():
             phone_number=form.phone_number.data,
             address=form.address.data
         )
-
         user.set_password(form.password.data)
         db.session.add(user)
+        db.session.flush()
+
+        m = Metadata(
+            user_id=user.id
+        )
+        db.session.add(m)
         db.session.commit()
 
         flash('Congratulations, you are now a registered user')
@@ -93,6 +106,11 @@ def edit_profile():
         current_user.phone_number = form.phone_number.data
         current_user.email = form.email.data
         current_user.address = form.address.data
+
+        m = Metadata.query.filter_by(id=current_user.id).first()
+        m.last_modified_on = datetime.utcnow()
+
+        db.session.add(m)
         db.session.commit()
         flash('Your changes have been updated!')
 
@@ -159,6 +177,11 @@ def edit_static_info():
             current_info.bloodgroup = form.bloodgroup.data
             current_info.allergies = form.allergies.data
             current_info.current_medication = form.current_medication.data
+
+            m = Metadata.query.filter_by(id=current_user.id).first()
+            m.static_info_last_modified_on = datetime.utcnow()
+
+            db.session.add(m)
             db.session.commit()
 
             flash('Information updated!')
@@ -174,6 +197,9 @@ def edit_static_info():
                 allergies=form.allergies.data,
                 current_medication=form.current_medication.data
             )
+            m = Metadata.query.filter_by(id=current_user.id).first()
+            m.static_info_last_modified_on = datetime.utcnow()
+
             db.session.add(info)
             db.session.commit()
 
