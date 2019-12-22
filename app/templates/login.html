@@ -45,5 +45,9 @@
     </table>
 </form>
 
+<p>
+    Forgot your password?
+    <a href="{{ url_for('reset_password_request') }}">Click here to reset it</a>
+</p>
 <p>New User? <a href="{{ url_for('register') }}">Click here to reigster</a></p>
 {% endblock %}

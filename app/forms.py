@@ -72,3 +72,14 @@ class StaticInformationForm(FlaskForm):
     allergies = TextAreaField('Allergies:')
     current_medication = TextAreaField('Current Medication:')
     submit = SubmitField('Update')
+
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = EmailField('Email:', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Enter new password:', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password:', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Change your password')
