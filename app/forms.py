@@ -4,6 +4,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextA
 from wtforms.validators import DataRequired, EqualTo, Email, ValidationError, Length
 from wtforms.fields.html5 import EmailField, TelField, DateField
 from app.models import User
+from app.verify import verify_aadhar_card
 
 
 class LoginForm(FlaskForm):
@@ -36,6 +37,10 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('''
         Sorry! This aadhar number is already in use.''')
+
+        if not verify_aadhar_card(aadhar_card):
+            raise ValidationError('''
+        Sorry! This aadhar number is not valid.''')
 
     def validate_phone_number(self, phone_number):
         user = User.query.filter_by(phone_number=phone_number.data).first()
