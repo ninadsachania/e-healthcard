@@ -123,7 +123,7 @@ python-editor==1.0.4
 python-gettext==4.0
 pytz==2019.3
 pyxattr==0.6.0
-pyxdg==0.25
+pyxdg==0.26
 PyYAML==3.12
 pyzmq==18.1.0
 QScintilla==2.10.8
