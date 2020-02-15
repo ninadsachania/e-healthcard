@@ -82,3 +82,11 @@ class Metadata(db.Model):
         db.DateTime,
         nullable=True,
     )
+
+
+class Doctor(db.Model):
+    doctor_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
+    hospital_name = db.Column(db.String(256), nullable=False)
+    designation = db.Column(db.String(256), nullable=False)
+    verified = db.Column(db.Boolean, default=False)
