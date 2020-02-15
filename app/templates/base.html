@@ -42,6 +42,10 @@
     {% block content %}{% endblock %}
 
     <hr>
-    <div id="footer"></div>
+    <div id="footer">
+        <a href="{{ url_for('about') }}">About Us</a>
+        <a href="{{ url_for('contact') }}">Contact Us</a>
+        <a href="{{ url_for('faqs') }}">FAQs</a>
+    </div>
 </body>
 </html>
