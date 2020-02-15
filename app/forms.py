@@ -88,3 +88,9 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Enter new password:', validators=[DataRequired()])
     password2 = PasswordField('Repeat Password:', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Change your password')
+
+
+class DoctorRegistrationForm(FlaskForm):
+    hospital_name = StringField('Hospital name:', validators=[DataRequired()])
+    designation = StringField('Designation:', validators=[DataRequired()])
+    submit = SubmitField('Submit')
