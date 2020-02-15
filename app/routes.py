@@ -259,5 +259,17 @@ def reset_password(token):
     return render_template('reset_password_form.html', form=form, title='Reset Password')
 
 
+@app.route('/contact')
+def contact():
+    return render_template('contact_us.html')
+
+@app.route('/faqs')
+def faqs():
+    return render_template('faqs.html')
+
+@app.route('/about')
+def about():
+    return render_template('about_us.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
