@@ -1,8 +1,9 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
-    PasswordResetForm, StaticInformationForm, ResetPasswordRequestForm, ResetPasswordForm
-from app.models import User, StaticInformation, Metadata
+    PasswordResetForm, StaticInformationForm, ResetPasswordRequestForm, \
+    ResetPasswordForm, DoctorRegistrationForm
+from app.models import User, StaticInformation, Metadata, Doctor
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
@@ -272,6 +273,63 @@ def faqs():
 @app.route('/about')
 def about():
     return render_template('about_us.html')
+
+
+# Doctor
+@app.route('/for_doctors')
+def for_doctors():
+    # only want to show some links if the user is a doctor
+    is_doctor = Doctor.query.filter_by(user_id=current_user.id).first()
+
+    return render_template('for_doctors.html', is_doctor=is_doctor)
+
+@login_required
+@app.route('/doctor/register', methods=["GET", "POST"])
+def doctor_registration():
+    # check if the doctor is already registered
+    if Doctor.query.filter_by(user_id=current_user.id).first():
+        flash('Doctor is already registered!')
+        return redirect(url_for('for_doctors'))
+
+    form = DoctorRegistrationForm()
+
+    if form.validate_on_submit():
+        doctor = Doctor(
+            user_id=current_user.id,
+            hospital_name=form.hospital_name.data,
+            designation=form.designation.data
+        )
+
+        db.session.add(doctor)
+        db.session.commit()
+
+        flash("Congratulations! You're now registered")
+        return redirect(url_for('for_doctors'))
+
+    return render_template('doctor_registration.html', form=form)
+
+
+@login_required
+@app.route('/doctor/profile')
+def doctor_profile():
+    doctor = Doctor.query.filter_by(user_id=current_user.id).first()
+
+    data = {
+        'hospital_name': doctor.hospital_name,
+        'designation': doctor.designation,
+        'is_verified': doctor.verified
+    }
+
+    return render_template('doctor_profile.html', data=data)
+
+
+@login_required
+@app.route('/doctor/add_record')
+def add_record():
+    doctor = Doctor.query.filter_by(user_id=current_user.id).first()
+    is_verified = doctor.verified
+
+    return render_template('add_record.html', is_verified=is_verified)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Registration (Doctor)</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <table>
+        <tr>
+            <td>{{ form.hospital_name.label }}</td>
+            <td>{{ form.hospital_name() }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.hospital_name.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>{{ form.designation.label }}</td>
+            <td>{{ form.designation() }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.designation.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td>{{ form.submit() }}</td>
+        </tr>
+    </table>
+</form>
+{% endblock %}
