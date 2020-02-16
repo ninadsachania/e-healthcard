@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>View static record</h1>
+<form method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <table>
+        <tr>
+            <td>{{ form.id.label }}</td>
+            <td>{{ form.id() }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {% for error in form.id.errors %}
+                <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td>{{ form.submit() }}</td>
+        </tr>
+    </table>
+</form>
+
+<!-- Static information -->
+{% if static_data %}
+    <h2>Static Data:</h2>
+    <table>
+        <tr>
+            <td>Date of Birth:</td>
+            <td>{{ static_data.dob }}</td>
+        </tr>
+
+        <tr>
+            <td>Gender:</td>
+            <td>{{ static_data.gender }}</td>
+        </tr>
+
+        <tr>
+            <td>Emergency Contact:</td>
+            <td>{{ static_data.emergency_contact }}</td>
+        </tr>
+
+        <tr>
+            <td>Height (cm):</td>
+            <td>{{ static_data.height }}</td>
+        </tr>
+
+        <tr>
+            <td>Weight (kg):</td>
+            <td>{{ static_data.weight }}</td>
+        </tr>
+
+        <tr>
+            <td>Allergies:</td>
+            <td>{{ static_data.allergies }}</td>
+        </tr>
+
+        <tr>
+            <td>Current Medication:</td>
+            <td>{{ static_data.current_medication }}</td>
+        </tr>
+    </table>
+{% else %}
+{% endif %}
+
+{% if data %}
+    <h2>User Data:</h2>
+    <table>
+        <tr>
+            <td>Firstname: </td>
+            <td>{{ data.firstname }}</td>
+        </tr>
+
+        <tr>
+            <td>Middlename: </td>
+            <td>{{ data.middlename }}</td>
+        </tr>
+
+        <tr>
+            <td>Lastname: </td>
+            <td>{{ data.lastname }}</td>
+        </tr>
+
+        <tr>
+            <td>Email: </td>
+            <td>{{ data.email }}</td>
+        </tr>
+
+        <tr>
+            <td>Aadhar Card: </td>
+            <td>{{ data.aadhar_card }}</td>
+        </tr>
+
+        <tr>
+            <td>Phone Number: </td>
+            <td>{{ data.phone_number }}</td>
+        </tr>
+
+        <tr>
+            <td>Address: </td>
+            <td>{{ data.address }}</td>
+        </tr>
+    </table>
+{% else %}
+{% endif %}
+
+{% endblock %}

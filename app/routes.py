@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
     PasswordResetForm, StaticInformationForm, ResetPasswordRequestForm, \
-    ResetPasswordForm, DoctorRegistrationForm
+    ResetPasswordForm, DoctorRegistrationForm, ViewStaticInformationForm
 from app.models import User, StaticInformation, Metadata, Doctor
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -337,14 +337,53 @@ def doctor_profile():
     return render_template('doctor_profile.html', data=data)
 
 
+def is_verified_doctor(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        doctor = Doctor.query.filter_by(user_id=current_user.id).first()
+        is_verified = doctor.verified
+
+        if not is_verified:
+            return render_template('not_verified.html')
+
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @app.route('/doctor/add_record')
 @login_required
 @is_doctor
+@is_verified_doctor
 def add_record():
-    doctor = Doctor.query.filter_by(user_id=current_user.id).first()
-    is_verified = doctor.verified
+    return render_template('add_record.html')
 
-    return render_template('add_record.html', is_verified=is_verified)
+
+@app.route('/doctor/static_record', methods=['GET', 'POST'])
+@login_required
+@is_doctor
+@is_verified_doctor
+def static_record():
+    ''' This route is where doctors will go to view the static record of a patient. '''
+    form = ViewStaticInformationForm()
+
+    user_data = None
+    static_data = None
+
+    if form.validate_on_submit():
+        user_data = User.query.filter_by(id=form.id.data).first()
+
+        if user_data:
+            # The user exists. Now check for their 'static_data'
+            static_data = StaticInformation.query.filter_by(id=user_data.id).first()
+            if static_data:
+                return render_template('view_static_record.html', static_data=static_data, data=user_data, form=form)
+
+            # They have no 'static_data'
+            return render_template('view_static_record.html', static_data=static_data, data=user_data, form=form)
+
+        flash('This user does not exist')
+
+    return render_template('view_static_record.html', title='View Static Record', form=form)
 
 
 if __name__ == '__main__':
