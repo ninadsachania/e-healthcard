@@ -82,6 +82,7 @@ class DynamicInformation(db.Model):
     notes = db.Column(db.String(1024), nullable=True)
     previous_case_id = db.Column(db.Integer, default=0, nullable=True)
     next_case_id = db.Column(db.Integer, default=0, nullable=True)
+    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
 class Metadata(db.Model):
