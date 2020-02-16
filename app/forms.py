@@ -96,6 +96,6 @@ class DoctorRegistrationForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
-class ViewStaticInformationForm(FlaskForm):
+class GetPatientInformationForm(FlaskForm):
     id = StringField('ID of the patient:', validators=[DataRequired()])
     submit = SubmitField('View')
