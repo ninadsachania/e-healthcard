@@ -74,7 +74,7 @@ class StaticInformation(db.Model):
 
 class DynamicInformation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     doctor_id = db.Column(db.Integer, nullable=False)
     symptoms = db.Column(db.String(512), nullable=True)
     diagnosis = db.Column(db.String(512), nullable=False)
