@@ -72,6 +72,18 @@ class StaticInformation(db.Model):
     current_medication = db.Column(db.String(512), nullable=True)
 
 
+class DynamicInformation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False, db.ForeignKey('user.id'))
+    doctor_id = db.Column(db.Integer, nullable=False)
+    symptoms = db.Column(db.String(512), nullable=True)
+    diagnosis = db.Column(db.String(512), nullable=False)
+    prescribed_medication = db.Column(db.String(512), nullable=False)
+    notes = db.Column(db.String(1024), nullable=True)
+    previous_case_id = db.Column(db.Integer, default=0, nullable=True)
+    next_case_id = db.Column(db.Integer, default=0, nullable=True)
+
+
 class Metadata(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
