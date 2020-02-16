@@ -99,3 +99,13 @@ class DoctorRegistrationForm(FlaskForm):
 class GetPatientInformationForm(FlaskForm):
     id = StringField('ID of the patient:', validators=[DataRequired()])
     submit = SubmitField('View')
+
+
+class AddDynamicInformationForm(FlaskForm):
+    user_id = StringField('User ID:', validators=[DataRequired()])
+    doctor_id = StringField('Doctor ID:', validators=[DataRequired()])
+    symptoms = TextAreaField('Symptoms:', validators=[DataRequired()])
+    diagnosis = TextAreaField('Diagnosis:', validators=[DataRequired()])
+    prescribed_medication = TextAreaField('Prescribed Medication:', validators=[DataRequired()])
+    notes = TextAreaField('Notes:')
+    submit = SubmitField('Add')
