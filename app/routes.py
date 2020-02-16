@@ -8,6 +8,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
 from app.email import send_password_reset_email
+from functools import wraps
 
 
 @app.route('/index')
@@ -276,6 +277,17 @@ def about():
 
 
 # Doctor
+def is_doctor(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not Doctor.query.filter_by(user_id=current_user.id).first():
+            flash("You do not have permission to view that page", "warning")
+            return redirect(url_for('for_doctors'))
+
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @app.route('/for_doctors')
 def for_doctors():
     # only want to show some links if the user is a doctor
@@ -283,8 +295,9 @@ def for_doctors():
 
     return render_template('for_doctors.html', is_doctor=is_doctor)
 
-@login_required
+
 @app.route('/doctor/register', methods=["GET", "POST"])
+@login_required
 def doctor_registration():
     # check if the doctor is already registered
     if Doctor.query.filter_by(user_id=current_user.id).first():
@@ -309,8 +322,9 @@ def doctor_registration():
     return render_template('doctor_registration.html', form=form)
 
 
-@login_required
 @app.route('/doctor/profile')
+@login_required
+@is_doctor
 def doctor_profile():
     doctor = Doctor.query.filter_by(user_id=current_user.id).first()
 
@@ -323,8 +337,9 @@ def doctor_profile():
     return render_template('doctor_profile.html', data=data)
 
 
-@login_required
 @app.route('/doctor/add_record')
+@login_required
+@is_doctor
 def add_record():
     doctor = Doctor.query.filter_by(user_id=current_user.id).first()
     is_verified = doctor.verified
