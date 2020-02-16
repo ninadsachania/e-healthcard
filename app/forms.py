@@ -94,3 +94,8 @@ class DoctorRegistrationForm(FlaskForm):
     hospital_name = StringField('Hospital name:', validators=[DataRequired()])
     designation = StringField('Designation:', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+class ViewStaticInformationForm(FlaskForm):
+    id = StringField('ID of the patient:', validators=[DataRequired()])
+    submit = SubmitField('View')
