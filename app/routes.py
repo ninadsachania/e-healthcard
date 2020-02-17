@@ -10,6 +10,7 @@ from werkzeug.urls import url_parse
 from datetime import datetime
 from app.email import send_password_reset_email
 from functools import wraps
+from qrcode import qrcode_path
 
 
 @app.route('/index')
@@ -300,6 +301,33 @@ def faqs():
 @app.route('/about')
 def about():
     return render_template('about_us.html')
+
+
+@app.route('/user/qrcode')
+@login_required
+def qrcode():
+    '''
+    This generates a QR code containing the following information:
+        * Name (Firstname + Middlename + Lastname)
+        * Phone Number
+        * Emergency Mobile Number
+        * Address
+    '''
+
+    user = User.query.filter_by(id=current_user.id).first()
+    emergency_contact = StaticInformation.query.filter_by(
+        user_id=current_user.id).first().emergency_contact
+
+    information = {
+        'id': user.id,
+        'name': '{} {} {}'.format(user.firstname, user.middlename, user.lastname),
+        'phone_number': user.phone_number,
+        'emergency_contact_number': emergency_contact,
+        'address': user.address
+    }
+
+    path = qrcode_path(information)
+    return render_template('qrcode.html', path=path, title='QR Code')
 
 
 # Doctor
