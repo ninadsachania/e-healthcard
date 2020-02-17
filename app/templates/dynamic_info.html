@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Dynamic Information</h1>
+
+{% for record in records %}
+<table>
+    <tr>
+        <td>ID:</td>
+        <td>{{ record['id'] }}</td>
+    </tr>
+
+    <tr>
+        <td>Doctor:</td>
+        <td>{{ record['doctor_name'] }}</td>
+    </tr>
+
+    <tr>
+        <td>Hospital:</td>
+        <td>{{ record['hospital_name'] }}</td>
+    </tr>
+
+    <tr>
+        <td>Symptoms:</td>
+        <td>{{ record['symptoms'] }}</td>
+    </tr>
+
+    <tr>
+        <td>Diagnosis:</td>
+        <td>{{ record['diagnosis'] }}</td>
+    </tr>
+
+    <tr>
+        <td>Prescribed Medication:</td>
+        <td>{{ record['prescribed_medication'] }}</td>
+    </tr>
+
+    <tr>
+        <td>Notes:</td>
+        <td>{{ record['notes'] }}</td>
+    </tr>
+
+    <tr>
+        <td>Date created:</td>
+        <td>{{ record['date_created'] }}</td>
+    </tr>
+</table>
+
+<hr>
+{% endfor %}
+
+{% endblock %}

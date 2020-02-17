@@ -163,6 +163,31 @@ def static_info():
     return render_template('static_info.html', title='Static Information', info=info)
 
 
+@app.route('/user/dynamic_info')
+def dynamic_info():
+    dynamic_records = DynamicInformation.query.filter_by(user_id=current_user.id).all()
+
+    records = []
+
+    for record in dynamic_records:
+        doctor = Doctor.query.filter_by(doctor_id=record.doctor_id).first()
+
+        user = User.query.filter_by(id=doctor.user_id).first()
+
+        records.append({
+            'id': record.id,
+            'doctor_name': "Dr, {} {}, {}".format(user.firstname, user.lastname, doctor.designation),
+            'hospital_name': doctor.hospital_name,
+            'symptoms': record.symptoms,
+            'diagnosis': record.diagnosis,
+            'prescribed_medication': record.prescribed_medication,
+            'notes': record.notes,
+            'date_created': record.date_created
+        })
+
+    return render_template('dynamic_info.html', title='Dynamic Information', records=records)
+
+
 @app.route('/user/edit_static_info', methods=['POST', 'GET'])
 @login_required
 def edit_static_info():
