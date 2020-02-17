@@ -466,5 +466,17 @@ def dynamic_records():
 
     return render_template('view_dynamic_records.html', title='View Dynamic Records', form=form)
 
+
+@app.route('/doctor/view_all_records')
+@login_required
+@is_doctor
+@is_verified_doctor
+def view_all_records():
+    doctor_id = Doctor.query.filter_by(user_id=current_user.id).first().doctor_id
+    records = DynamicInformation.query.filter_by(doctor_id=doctor_id).all()
+
+    return render_template('view_all_dynamic_records.html', records=records)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
