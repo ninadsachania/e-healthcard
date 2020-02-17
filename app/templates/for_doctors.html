@@ -6,6 +6,7 @@
     <p><a href="{{ url_for('add_record') }}">Enter</a> patient records</p>
     <p><a href="{{ url_for('doctor_profile') }}">Profile</a></p>
     <p><a href="{{ url_for('static_record') }}">View static information</a></p>
+    <p><a href="{{ url_for('dynamic_records') }}">View dynamic records</a></p>
 {% else %}
     <!-- This link should only be shown if the user is not a registered doctor. -->
     <p>Click <a href="{{ url_for('doctor_registration') }}">here</a> to register yourself.</p>

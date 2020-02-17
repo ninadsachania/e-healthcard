@@ -443,5 +443,28 @@ def static_record():
     return render_template('view_static_record.html', title='View Static Record', form=form)
 
 
+@app.route('/doctor/dynamic_records', methods=['GET', 'POST'])
+@login_required
+@is_doctor
+@is_verified_doctor
+def dynamic_records():
+    form = GetPatientInformationForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(id=form.id.data).first()
+
+        if user:
+            doctor_id = Doctor.query.filter_by(user_id=current_user.id).first().doctor_id
+
+            records = DynamicInformation.query.filter(
+                DynamicInformation.user_id == form.id.data).filter(
+                    DynamicInformation.doctor_id == doctor_id).all()
+
+            return render_template('view_dynamic_records.html', title='View Dynamic Records', user=user, form=form, records=records)
+
+        flash('User does not exist.')
+
+    return render_template('view_dynamic_records.html', title='View Dynamic Records', form=form)
+
 if __name__ == '__main__':
     app.run(debug=True)
