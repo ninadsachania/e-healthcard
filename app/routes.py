@@ -2,8 +2,9 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
     PasswordResetForm, StaticInformationForm, ResetPasswordRequestForm, \
-    ResetPasswordForm, DoctorRegistrationForm, ViewStaticInformationForm
-from app.models import User, StaticInformation, Metadata, Doctor
+    ResetPasswordForm, DoctorRegistrationForm, GetPatientInformationForm, \
+    AddDynamicInformationForm
+from app.models import User, StaticInformation, Metadata, Doctor, DynamicInformation
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
@@ -289,6 +290,7 @@ def is_doctor(f):
 
 
 @app.route('/for_doctors')
+@app.route('/doctor/')
 def for_doctors():
     # only want to show some links if the user is a doctor
     is_doctor = Doctor.query.filter_by(user_id=current_user.id).first()
@@ -350,12 +352,42 @@ def is_verified_doctor(f):
     return decorated_function
 
 
-@app.route('/doctor/add_record')
+@app.route('/doctor/add_record', methods=['GET', 'POST'])
 @login_required
 @is_doctor
 @is_verified_doctor
 def add_record():
-    return render_template('add_record.html')
+    form = AddDynamicInformationForm()
+
+    doctor_id = Doctor.query.filter_by(user_id=current_user.id).first().doctor_id
+    form.doctor_id.data = doctor_id
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(id=form.user_id.data).first()
+
+        if user:
+            # The user does exist.
+
+            dynamic_info = DynamicInformation(
+                user_id=form.user_id.data,
+                doctor_id=form.doctor_id.data,
+                symptoms=form.symptoms.data,
+                diagnosis=form.diagnosis.data,
+                prescribed_medication=form.prescribed_medication.data,
+                notes=form.notes.data
+            )
+
+            # Add the data to the table
+            db.session.add(dynamic_info)
+            db.session.commit()
+
+            flash("Data successfully added.")
+            return redirect(url_for('add_record'))
+
+        elif not user:
+            flash("User ID: {} does not exist".format(form.user_id.data))
+
+    return render_template('add_record.html', form=form)
 
 
 @app.route('/doctor/static_record', methods=['GET', 'POST'])
@@ -364,7 +396,7 @@ def add_record():
 @is_verified_doctor
 def static_record():
     ''' This route is where doctors will go to view the static record of a patient. '''
-    form = ViewStaticInformationForm()
+    form = GetPatientInformationForm()
 
     user_data = None
     static_data = None
