@@ -15,7 +15,9 @@ def make_qrcode(information: {}):
         '{}.png'.format(information['id'])
     )
 
-    qrcode.save(path, scale=5)
+    # Check to see if QR code has already been generated
+    if not os.path.exists(path):
+        qrcode.save(path, scale=5)
 
 
 def qrcode_path(information: {}):
