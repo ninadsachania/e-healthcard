@@ -196,7 +196,7 @@ def edit_static_info():
     form = StaticInformationForm()
 
     if form.validate_on_submit():
-        current_info = StaticInformation.query.filter_by(id=current_user.id).first()
+        current_info = StaticInformation.query.filter_by(user_id=current_user.id).first()
 
         if current_info:
             current_info.dob = form.dob.data
