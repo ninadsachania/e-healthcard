@@ -237,7 +237,7 @@ def edit_static_info():
 
         return redirect(url_for('static_info'))
     elif request.method == 'GET':
-        current_info = StaticInformation.query.filter_by(id=current_user.id).first()
+        current_info = StaticInformation.query.filter_by(user_id=current_user.id).first()
 
         if current_info:
             form.dob.data = current_info.dob
