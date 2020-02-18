@@ -82,15 +82,19 @@ class DynamicInformation(db.Model):
     notes = db.Column(db.String(1024), nullable=True)
     previous_case_id = db.Column(db.Integer, default=0, nullable=True)
     next_case_id = db.Column(db.Integer, default=0, nullable=True)
-    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_created = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow)
 
 
 class Metadata(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    last_logged_in = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    last_modified_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_on = db.Column(db.DateTime, nullable=False,
+                           default=datetime.utcnow)
+    last_logged_in = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow)
+    last_modified_on = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow)
     static_info_last_modified_on = db.Column(
         db.DateTime,
         nullable=True,
@@ -99,7 +103,8 @@ class Metadata(db.Model):
 
 class Doctor(db.Model):
     doctor_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'user.id'), nullable=False, unique=True)
     hospital_name = db.Column(db.String(256), nullable=False)
     designation = db.Column(db.String(256), nullable=False)
     verified = db.Column(db.Boolean, default=False)
