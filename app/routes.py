@@ -10,7 +10,7 @@ from werkzeug.urls import url_parse
 from datetime import datetime
 from app.email import send_password_reset_email
 from functools import wraps
-from qrcode import qrcode_path
+from qrcode import qrcode_path, make_qrcode, qrcode_data
 
 
 @app.route('/index')
@@ -117,6 +117,14 @@ def edit_profile():
 
         db.session.add(m)
         db.session.commit()
+
+        # Update the QR code of the user
+        user = User.query.filter_by(id=current_user.id).first()
+        static_info = StaticInformation.query.filter_by(
+            user_id=current_user.id).first()
+
+        make_qrcode(qrcode_data(user, static_info))
+        
         flash('Your changes have been updated!')
 
         return redirect(url_for('edit_profile'))
@@ -213,6 +221,13 @@ def edit_static_info():
 
             db.session.add(m)
             db.session.commit()
+
+            # Update the QR code of the user
+            user = User.query.filter_by(id=current_user.id).first()
+            static_info = StaticInformation.query.filter_by(
+                user_id=current_user.id).first()
+
+            make_qrcode(qrcode_data(user, static_info))
 
             flash('Information updated!')
         else:
@@ -323,14 +338,7 @@ def qrcode():
         * Blood group
     '''
 
-    information = {
-        'id': user.id,
-        'name': '{} {} {}'.format(user.firstname, user.middlename, user.lastname),
-        'phone_number': user.phone_number,
-        'emergency_contact_number': static_info.emergency_contact,
-        'address': user.address,
-        'boodgroup': static_info.bloodgroup
-    }
+    information = qrcode_data(user, static_info)
 
     path = qrcode_path(information)
     return render_template('qrcode.html', path=path, title='QR Code')
