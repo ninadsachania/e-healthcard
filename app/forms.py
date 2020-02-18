@@ -42,7 +42,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('''
         Sorry! This aadhar number is already in use.''')
 
-        if not verify_aadhar_card(aadhar_card):
+        if not verify_aadhar_card(aadhar_card.data):
             raise ValidationError('''
         Sorry! This aadhar number is not valid.''')
 
