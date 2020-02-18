@@ -33,6 +33,10 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Sorry! This email is already in use')
 
     def validate_aadhar_card(self, aadhar_card):
+        if len(aadhar_card.data) != 12:
+            raise ValidationError('''
+        The number needs to 12 digits long.''')
+
         user = User.query.filter_by(aadhar_card=aadhar_card.data).first()
         if user is not None:
             raise ValidationError('''
