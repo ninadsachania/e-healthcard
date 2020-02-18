@@ -160,7 +160,7 @@ def medical_information():
 @app.route('/user/static_info')
 @login_required
 def static_info():
-    info = StaticInformation.query.filter_by(id=current_user.id).first()
+    info = StaticInformation.query.filter_by(user_id=current_user.id).first()
     return render_template('static_info.html', title='Static Information', info=info)
 
 
