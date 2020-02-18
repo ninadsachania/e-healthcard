@@ -306,6 +306,14 @@ def about():
 @app.route('/user/qrcode')
 @login_required
 def qrcode():
+    user = User.query.filter_by(id=current_user.id).first()
+    static_info = StaticInformation.query.filter_by(
+        user_id=current_user.id).first()
+
+    if not static_info:
+        flash('You need to enter some basic information about you before you can generate a QR code.')
+        return redirect(url_for('edit_static_info'))
+
     '''
     This generates a QR code containing the following information:
         * Name (Firstname + Middlename + Lastname)
@@ -314,10 +322,6 @@ def qrcode():
         * Address
         * Blood group
     '''
-
-    user = User.query.filter_by(id=current_user.id).first()
-    static_info = StaticInformation.query.filter_by(
-        user_id=current_user.id).first()
 
     information = {
         'id': user.id,
