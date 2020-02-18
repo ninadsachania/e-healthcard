@@ -4,7 +4,8 @@ from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
     PasswordResetForm, StaticInformationForm, ResetPasswordRequestForm, \
     ResetPasswordForm, DoctorRegistrationForm, GetPatientInformationForm, \
     AddDynamicInformationForm
-from app.models import User, StaticInformation, Metadata, Doctor, DynamicInformation
+from app.models import User, StaticInformation, Metadata, Doctor, \
+    DynamicInformation
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
@@ -124,7 +125,7 @@ def edit_profile():
             user_id=current_user.id).first()
 
         make_qrcode(qrcode_data(user, static_info))
-        
+
         flash('Your changes have been updated!')
 
         return redirect(url_for('edit_profile'))
