@@ -290,17 +290,17 @@ def reset_password(token):
 
 @app.route('/contact')
 def contact():
-    return render_template('contact_us.html')
+    return render_template('contact_us.html', title='Contact Us')
 
 
 @app.route('/faqs')
 def faqs():
-    return render_template('faqs.html')
+    return render_template('faqs.html', title='FAQs')
 
 
 @app.route('/about')
 def about():
-    return render_template('about_us.html')
+    return render_template('about_us.html', title='About Us')
 
 
 @app.route('/user/qrcode')
@@ -354,7 +354,7 @@ def for_doctors():
     # only want to show some links if the user is a doctor
     is_doctor = Doctor.query.filter_by(user_id=current_user.id).first()
 
-    return render_template('for_doctors.html', is_doctor=is_doctor)
+    return render_template('for_doctors.html', is_doctor=is_doctor, title='Doctor')
 
 
 @app.route('/doctor/register', methods=["GET", "POST"])
@@ -362,7 +362,7 @@ def for_doctors():
 def doctor_registration():
     # check if the doctor is already registered
     if Doctor.query.filter_by(user_id=current_user.id).first():
-        flash('Doctor is already registered!')
+        flash('You are already registered as a doctor.')
         return redirect(url_for('for_doctors'))
 
     form = DoctorRegistrationForm()
@@ -380,7 +380,7 @@ def doctor_registration():
         flash("Congratulations! You're now registered")
         return redirect(url_for('for_doctors'))
 
-    return render_template('doctor_registration.html', form=form)
+    return render_template('doctor_registration.html', form=form, title='Doctor Registration')
 
 
 @app.route('/doctor/profile')
@@ -395,7 +395,7 @@ def doctor_profile():
         'is_verified': doctor.verified
     }
 
-    return render_template('doctor_profile.html', data=data)
+    return render_template('doctor_profile.html', data=data, title="Doctor's Profile")
 
 
 def is_verified_doctor(f):
@@ -446,7 +446,7 @@ def add_record():
         elif not user:
             flash("User ID: {} does not exist".format(form.user_id.data))
 
-    return render_template('add_record.html', form=form)
+    return render_template('add_record.html', form=form, title='New Record')
 
 
 @app.route('/doctor/static_record', methods=['GET', 'POST'])
@@ -455,6 +455,7 @@ def add_record():
 @is_verified_doctor
 def static_record():
     ''' This route is where doctors will go to view the static record of a patient. '''
+    title = 'View Static Information'
     form = GetPatientInformationForm()
 
     user_data = None
@@ -467,14 +468,26 @@ def static_record():
             # The user exists. Now check for their 'static_data'
             static_data = StaticInformation.query.filter_by(id=user_data.id).first()
             if static_data:
-                return render_template('view_static_record.html', static_data=static_data, data=user_data, form=form)
+                return render_template(
+                    'view_static_record.html',
+                    static_data=static_data,
+                    data=user_data,
+                    form=form,
+                    title=title
+                )
 
             # They have no 'static_data'
-            return render_template('view_static_record.html', static_data=static_data, data=user_data, form=form)
+            return render_template(
+                'view_static_record.html',
+                static_data=static_data,
+                data=user_data,
+                form=form,
+                title=title
+            )
 
         flash('This user does not exist')
 
-    return render_template('view_static_record.html', title='View Static Record', form=form)
+    return render_template('view_static_record.html', form=form, title=title)
 
 
 @app.route('/doctor/dynamic_records', methods=['GET', 'POST'])
@@ -483,6 +496,7 @@ def static_record():
 @is_verified_doctor
 def dynamic_records():
     form = GetPatientInformationForm()
+    title = 'View Dynamic Records'
 
     if form.validate_on_submit():
         user = User.query.filter_by(id=form.id.data).first()
@@ -494,11 +508,17 @@ def dynamic_records():
                 DynamicInformation.user_id == form.id.data).filter(
                     DynamicInformation.doctor_id == doctor_id).all()
 
-            return render_template('view_dynamic_records.html', title='View Dynamic Records', user=user, form=form, records=records)
+            return render_template(
+                'view_dynamic_records.html',
+                user=user,
+                form=form,
+                records=records,
+                title=title,
+            )
 
         flash('User does not exist.')
 
-    return render_template('view_dynamic_records.html', title='View Dynamic Records', form=form)
+    return render_template('view_dynamic_records.html', form=form, title=title)
 
 
 @app.route('/doctor/view_all_records')
@@ -509,7 +529,11 @@ def view_all_records():
     doctor_id = Doctor.query.filter_by(user_id=current_user.id).first().doctor_id
     records = DynamicInformation.query.filter_by(doctor_id=doctor_id).all()
 
-    return render_template('view_all_dynamic_records.html', records=records)
+    return render_template(
+        'view_all_dynamic_records.html',
+        records=records,
+        title='All Dynamic Records'
+    )
 
 
 if __name__ == '__main__':
