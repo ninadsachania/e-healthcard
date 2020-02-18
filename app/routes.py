@@ -312,18 +312,20 @@ def qrcode():
         * Phone Number
         * Emergency Mobile Number
         * Address
+        * Blood group
     '''
 
     user = User.query.filter_by(id=current_user.id).first()
-    emergency_contact = StaticInformation.query.filter_by(
-        user_id=current_user.id).first().emergency_contact
+    static_info = StaticInformation.query.filter_by(
+        user_id=current_user.id).first()
 
     information = {
         'id': user.id,
         'name': '{} {} {}'.format(user.firstname, user.middlename, user.lastname),
         'phone_number': user.phone_number,
-        'emergency_contact_number': emergency_contact,
-        'address': user.address
+        'emergency_contact_number': static_info.emergency_contact,
+        'address': user.address,
+        'boodgroup': static_info.bloodgroup
     }
 
     path = qrcode_path(information)
