@@ -47,4 +47,5 @@ def verify_aadhar_card(number: int) -> bool:
         """Validate Verhoeff checksummed number (checksum is last digit)"""
         return checksum(number) == 0
 
-    return validateVerhoeff(number)
+    # return validateVerhoeff(number)
+    return True  # TODO: Remove this before presentation
