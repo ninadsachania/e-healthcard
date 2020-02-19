@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
     phone_number = db.Column(db.String(10), index=True, unique=True)
     confirmed = db.Column(db.Boolean, default=True)
     address = db.Column(db.String(512))
+    rfid = db.Column(db.String(7), index=True, unique=True)
     password_hash = db.Column(db.String(128))
 
     def set_password(self, password):
