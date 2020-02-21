@@ -458,6 +458,42 @@ def add_record():
     return render_template('add_record.html', form=form, title='New Record')
 
 
+@app.route('/doctor/add_record/rfid/', methods=['GET', 'POST'])
+@login_required
+@is_doctor
+@is_verified_doctor
+def add_record_from_rfid():
+    # TODO: Refact, test & cleanup
+    form = AddDynamicInformationForm()
+
+    rfid = request.args.get('rfid')
+
+    if rfid is not None:
+        user = User.query.filter_by(rfid=rfid).first()
+
+        if user:
+            doctor_id = Doctor.query.filter_by(user_id=current_user.id).first().doctor_id
+
+            form.user_id.data = user.id
+            form.doctor_id.data = doctor_id
+        elif not user:
+            flash('Not a valid RFID')
+
+    if form.validate_on_submit():
+        dynamic_info = DynamicInformation(
+                user_id=form.user_id.data,
+                doctor_id=form.doctor_id.data,
+                symptoms=form.symptoms.data,
+                diagnosis=form.diagnosis.data,
+                prescribed_medication=form.prescribed_medication.data,
+                notes=form.notes.data
+        )
+
+        db.session.add(dynamic_info)
+        db.session.commit()
+
+    return render_template('add_record_rfid.html', form=form, title='[RFID] New Record')
+
 @app.route('/doctor/static_record', methods=['GET', 'POST'])
 @login_required
 @is_doctor
