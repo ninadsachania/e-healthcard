@@ -1,48 +1,55 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Login In</h1>
+<h1 class="display-3">Login</h1>
 <form action="" method="post" novalidate>
+    
     {{ form.hidden_tag() }}
     <table>
+        <div class="form-group">
+            <tr>
+                <td><label>{{ form.username.label }}</label></td>
+            </tr>
+            <tr>
+                <td>{{ form.username(size=32, autofocus=True, class="form-control") }}</td>
+            </tr>
+            <tr>
+                <td><small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small></td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.username.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
+        <div class="form-group">
+            <tr>
+                <td><label>{{ form.password.label }}</label></td>
+            </tr>
+            <tr>
+                <td>{{ form.password(size=32, class="form-control") }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.password.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
         <tr>
-            <td>{{ form.username.label }}</td>
-            <td>{{ form.username(size=32, autofocus=True) }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.username.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
+            <td>{{ form.remember_me() }} {{ form.remember_me.label }}</td>
         </tr>
 
         <tr>
-            <td>{{ form.password.label }}</td>
-            <td>{{ form.password(size=32) }}</td>
-        </tr>
-        <tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.password.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-    </tr>
-
-        <tr>
-            <td></td>
-            <td>{{ form.remember_me() }}{{ form.remember_me.label }}</td>
-        </tr>
-
-        <tr>
-            <td></td>
-            <td>{{ form.submit() }}</td>
+            <td>{{ form.submit(class_="btn btn-primary") }}</td>
         </tr>
     </table>
+
 </form>
 
 <p>
