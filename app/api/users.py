@@ -2,7 +2,6 @@ from app.api import bp
 from flask import request, jsonify
 from app.models import User, Metadata
 from app import db
-import json
 from app.api.errors import bad_request, error_response
 
 
@@ -60,4 +59,10 @@ def create_user():
 
 @bp.route('/users/', methods=['GET'])
 def users():
-    return bad_request("Ninad Sachania")
+    users = User.query.all()
+    data = []
+
+    for user in users:
+        data.append(user.to_dict())
+
+    return jsonify(data)
