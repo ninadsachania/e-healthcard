@@ -5,6 +5,8 @@ from hashlib import md5
 from datetime import datetime
 import jwt
 from time import time
+import os
+import base64
 
 
 @login.user_loader
@@ -24,6 +26,26 @@ class User(UserMixin, db.Model):
     address = db.Column(db.String(512))
     rfid = db.Column(db.String(7), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    token = db.Column(db.String(32), index=True, unique=True)
+    is_token_valid = db.Column(db.Boolean, default=False)
+
+    def get_token(self):
+        if self.is_token_valid:
+            return self.token
+        self.token = base64.b64encode(os.urandom(24)).decode('utf-8')
+        self.is_token_valid = True
+        db.session.add(self)
+        return self.token
+
+    def revoke_token(self):
+        self.is_token_valid = False
+
+    @staticmethod
+    def check_token(token):
+        user = User.query.filter_by(token=token).first()
+        if user is None or not user.is_token_valid:
+            return None
+        return user
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -69,7 +91,8 @@ class User(UserMixin, db.Model):
             'aadhar_card': self.aadhar_card,
             'phone_number': self.phone_number,
             'address': self.address,
-            'rfid': self.rfid
+            'rfid': self.rfid,
+            'avatar': self.avatar()
         }
 
         return data
@@ -87,6 +110,19 @@ class StaticInformation(db.Model):
     allergies = db.Column(db.String(512), nullable=True)
     current_medication = db.Column(db.String(512), nullable=True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "gender": self.gender,
+            "dob": self.dob,
+            "emergency_contact": self.emergency_contact,
+            "height": self.height,
+            "weight": self.weight,
+            "bloodgroup": self.bloodgroup,
+            "allergies": self.allergies,
+            "current_medication": self.current_medication
+        }
+
 
 class DynamicInformation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -100,6 +136,19 @@ class DynamicInformation(db.Model):
     next_case_id = db.Column(db.Integer, default=0, nullable=True)
     date_created = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "doctor_id": self.doctor_id,
+            "symptoms": self.symptoms,
+            "diagnosis": self.diagnosis,
+            "prescribed_medication": self.prescribed_medication,
+            "notes": self.notes,
+            "previous_case_id": self.previous_case_id,
+            "next_case_id": self.next_case_id,
+            "date_created": self.date_created
+        }
 
 
 class Metadata(db.Model):
