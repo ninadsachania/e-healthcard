@@ -2,11 +2,11 @@ from app.api import bp
 from flask import request, jsonify, g
 from app.models import User, Metadata, StaticInformation, DynamicInformation
 from app import db
-from app.api.errors import bad_request, error_response
+from app.api.errors import error_response
 from app.api.auth import token_auth
 
 
-@bp.route('/users', methods=['GET'])
+@bp.route('/users/', methods=['GET'])
 @token_auth.login_required
 def get_user():
     user = g.current_user
@@ -57,6 +57,22 @@ def create_user():
 
     return jsonify(data)
 
+
+@bp.route('/users/', methods=['PUT'])
+@token_auth.login_required
+def update_user():
+    user = User.query.filter_by(id=g.current_user.id).first()
+    data = request.get_json()
+
+    for key, value in data.items():
+        if hasattr(user, key):
+            setattr(user, key, value)
+        else:
+            #TODO: Return a different error code when an unknown attribute is present
+            print(key, "does not exist")
+
+    db.session.commit()
+    return '', 200
 
 @bp.route('/users/all', methods=['GET'])
 def users():

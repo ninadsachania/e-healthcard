@@ -31,4 +31,3 @@ def verify_password(username, password):
 @basic_auth.error_handler
 def basic_auth_error():
     return error_response(401)
-
