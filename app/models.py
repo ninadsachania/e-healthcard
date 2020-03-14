@@ -59,6 +59,21 @@ class User(UserMixin, db.Model):
             return
         return User.query.get(id)
 
+    def to_dict(self):
+        data = {
+            'id': self.id,
+            'firstname': self.firstname,
+            'middlename': self.middlename,
+            'lastname': self.lastname,
+            'email': self.email,
+            'aadhar_card': self.aadhar_card,
+            'phone_number': self.phone_number,
+            'address': self.address,
+            'rfid': self.rfid
+        }
+
+        return data
+
 
 class StaticInformation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
