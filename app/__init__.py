@@ -15,6 +15,9 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 mail = Mail(app)
 
+from app.api import bp as api_bp
+app.register_blueprint(api_bp, url_prefix='/api')
+
 # Flask-Login needs to know the view func that handles login
 login.login_view = 'login'
 
