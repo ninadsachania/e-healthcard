@@ -209,3 +209,42 @@ No content in the body.
 ```
 
 - `204 NO CONTENT` if there is no static information
+
+### Get a user's dynamic records
+
+**Definition**
+
+`GET /api/users/dynamic_information` (Authorization required)
+
+**Response**
+
+- `200 OK` on success
+
+```json
+[
+    {
+        "date_created": "Mon, 16 Mar 2020 12:26:14 GMT",
+        "diagnosis": "Flu",
+        "doctor_id": 1,
+        "id": 1,
+        "next_case_id": 0,
+        "notes": "",
+        "prescribed_medication": "Rest",
+        "previous_case_id": 0,
+        "symptoms": "Cold, dry cough, runny nose."
+    },
+    {
+        "date_created": "Mon, 16 Mar 2020 12:34:33 GMT",
+        "diagnosis": "Food poisoning",
+        "doctor_id": 1,
+        "id": 2,
+        "next_case_id": 0,
+        "notes": "Plenty of rest and high intake of fluids.",
+        "prescribed_medication": "Rest and Paracetamol",
+        "previous_case_id": 0,
+        "symptoms": "Stomachache"
+    }
+]
+```
+
+- `204 NO CONTENT` if there are no dynamic records present
