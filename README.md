@@ -220,7 +220,7 @@ The response will contain the user's details.
 }
 ```
 
-- `400 BAD REQUEST` if the request contains and unknown field
+- `400 BAD REQUEST` if the request contains an unknown field
 
 ```json
 {
