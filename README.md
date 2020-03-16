@@ -96,7 +96,7 @@ No content in the body.
 
 **Definition**
 
-`GET /api/users`
+`GET /api/users` (Authorization required)
 
 **Response**
 
@@ -129,7 +129,7 @@ No content in the body.
 
 **Definition**
 
-`POST /api/users`
+`POST /api/users` (Authorization required)
 
 **Arguments**
 
@@ -184,9 +184,28 @@ No content in the body.
 }
 ```
 
-* `GET /api/users/<id>` Return a user
-* `GET /api/users/` Return the collection of users
-* `POST /api/users` Register a new account
-* `PUT /api/users/<id>` Modify a user
-* `GET /api/users/static_information/<id>` Return the static information of a user
-* `PUT /api/users/static_information/<id>` Modify the static information of a user
+### Get a user's static information
+
+**Definition**
+
+`GET /api/users/static_information`
+
+**Response**
+
+- `200 OK` on success
+
+```json
+{
+    "allergies": "From stupid people.",
+    "bloodgroup": "A+",
+    "current_medication": "Vitamin B12",
+    "dob": "Tue, 07 Jul 1998 00:00:00 GMT",
+    "emergency_contact": "9099869696",
+    "gender": "Male",
+    "height": 180,
+    "id": 1,
+    "weight": 71.0
+}
+```
+
+- `204 NO CONTENT` if there is no static information
