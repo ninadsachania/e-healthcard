@@ -107,7 +107,7 @@ def static_information():
 def dynamic_information():
     user = g.current_user
 
-    records = DynamicInformation.query.filter_by(user_id=user.id).first()
+    records = DynamicInformation.query.filter_by(user_id=user.id).all()
     if records is None:
         return error_response(204, "No data found")
 
