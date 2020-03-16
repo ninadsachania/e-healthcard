@@ -108,12 +108,9 @@ def dynamic_information():
     user = g.current_user
 
     records = DynamicInformation.query.filter_by(user_id=user.id).all()
-    if records is None:
+    if not records:
         return error_response(204, "No data found")
 
-    data = []
-
-    for record in records:
-        data.append(record.to_dict())
+    data = [record.to_dict() for record in records]
 
     return jsonify(data)
