@@ -511,7 +511,7 @@ def static_record():
 
         if user_data:
             # The user exists. Now check for their 'static_data'
-            static_data = StaticInformation.query.filter_by(id=user_data.id).first()
+            static_data = StaticInformation.query.filter_by(user_id=user_data.id).first()
             if static_data:
                 return render_template(
                     'view_static_record.html',
