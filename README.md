@@ -8,7 +8,7 @@ $ pip3 install -r requirements.txt
 
 Then execute `run.sh` file:
 
-```
+```bash
 $ ./run.sh
 ...
 ```
@@ -183,6 +183,52 @@ No content in the body.
     "message": "Sorry! This aadhar number is already in use."
 }
 ```
+
+### Updating a user's profile
+
+**Definition**
+
+`PUT /api/users` (Authorization required)
+
+**Response**
+
+- `200 OK` on success
+
+The response will contain the user's details.
+
+```json
+{
+    "aadhar_card": "123214983204",
+    "address": "Shivanand Bungalows B/H Annapurna Restaurant Jashodanagar.",
+    "avatar": "https://www.gravatar.com/avatar/4edab099fecc10e6f090d5567ab7c2aa?d=identicon&s=128",
+    "email": "ninad.sachania@gmail.com",
+    "firstname": "Ninad",
+    "id": 1,
+    "lastname": "Sachania",
+    "middlename": "Jaimin",
+    "phone_number": "9099869696",
+    "rfid": null
+}
+```
+
+- `400 BAD REQUEST` if you the request tries to change `email`, `aadhar_card` or the `phone_number` of the user.
+
+```json
+{
+    "error": "Bad Request",
+    "message": "Can't change email, aadhar_card and phone_number."
+}
+```
+
+- `400 BAD REQUEST` if the request contains and unknown field
+
+```json
+{
+    "error": "Bad Request",
+    "message": "Unknown key: firstnae"
+}
+```
+
 
 ### Get a user's static information
 
