@@ -1,5 +1,5 @@
 from app.api import bp
-from flask import request, jsonify, g
+from flask import request, jsonify, g, url_for
 from app.models import User, Metadata, StaticInformation, DynamicInformation
 from app import db
 from app.api.errors import error_response
@@ -18,7 +18,7 @@ def get_user():
 
 @bp.route('/users', methods=['POST'])
 def create_user():
-    data = request.get_json()
+    data = request.get_json() or {}
 
     user = User(
         firstname=data['firstname'],
@@ -33,12 +33,17 @@ def create_user():
     u = User.query.filter_by(email=data['email']).first()
 
     if u is not None:
-        return error_response(409, "Email already exists")
+        return error_response(409, "Sorry! This email is already in use")
 
     u = User.query.filter_by(phone_number=data['phone_number']).first()
 
     if u is not None:
-        return error_response(409, 'Phone number already exists')
+        return error_response(409, 'Sorry! This phone number is already in use.')
+
+    u = User.query.filter_by(aadhar_card=data['aadhar_card']).first()
+
+    if u is not None:
+        return error_response(409, 'Sorry! This aadhar number is already in use.')
 
     user.set_password(data['password'])
     db.session.add(user)
@@ -50,12 +55,10 @@ def create_user():
     db.session.add(m)
     db.session.commit()
 
-    data = {
-        'status': 200,
-        'message': 'User registered successfully!'
-    }
-
-    return jsonify(data)
+    response = jsonify(user.to_dict())
+    response.status_code = 201
+    response.headers['Location'] = url_for('api.get_user')
+    return response
 
 
 @bp.route('/users', methods=['PUT'])
