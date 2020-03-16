@@ -90,16 +90,12 @@ def users():
     return jsonify(data)
 
 
-@bp.route('/users/static_information')
+@bp.route('/users/static_information', methods=['GET'])
 @token_auth.login_required
 def static_information():
     user = g.current_user
 
-    if user is None:
-        return error_response(404, "User not found")
-
     info = StaticInformation.query.filter_by(user_id=user.id).first()
-
     if info is None:
         return error_response(204, message="No data found")
 
