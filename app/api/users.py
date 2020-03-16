@@ -2,7 +2,7 @@ from app.api import bp
 from flask import request, jsonify, g, url_for
 from app.models import User, Metadata, StaticInformation, DynamicInformation
 from app import db
-from app.api.errors import error_response
+from app.api.errors import error_response, bad_request
 from app.api.auth import token_auth
 
 
@@ -64,18 +64,25 @@ def create_user():
 @bp.route('/users', methods=['PUT'])
 @token_auth.login_required
 def update_user():
+    # TODO: Make it more robust and clean it up.
     user = User.query.filter_by(id=g.current_user.id).first()
-    data = request.get_json()
+    data = request.get_json() or {}
+
+    if 'email' in data or 'aadhar_card' in data or 'phone_number' in data:
+        return bad_request("Can't change email, aadhar_card and phone_number.")
+
+    unknown_keys = []
 
     for key, value in data.items():
         if hasattr(user, key):
             setattr(user, key, value)
         else:
             #TODO: Return a different error code when an unknown attribute is present
-            print(key, "does not exist")
+            unknown_keys.append(key)
+            return bad_request("Unknown key: {}".format(key))
 
     db.session.commit()
-    return '', 200
+    return jsonify(g.current_user.to_dict())
 
 
 @bp.route('/users/all', methods=['GET'])
