@@ -188,7 +188,7 @@ No content in the body.
 
 **Definition**
 
-`GET /api/users/static_information`
+`GET /api/users/static_information` (Authorization required)
 
 **Response**
 
