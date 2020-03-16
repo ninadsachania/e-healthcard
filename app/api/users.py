@@ -6,7 +6,7 @@ from app.api.errors import error_response
 from app.api.auth import token_auth
 
 
-@bp.route('/users/', methods=['GET'])
+@bp.route('/users', methods=['GET'])
 @token_auth.login_required
 def get_user():
     user = g.current_user
@@ -16,7 +16,7 @@ def get_user():
     return error_response(404, "User not found")
 
 
-@bp.route('/users/', methods=['POST'])
+@bp.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
 
@@ -58,7 +58,7 @@ def create_user():
     return jsonify(data)
 
 
-@bp.route('/users/', methods=['PUT'])
+@bp.route('/users', methods=['PUT'])
 @token_auth.login_required
 def update_user():
     user = User.query.filter_by(id=g.current_user.id).first()
@@ -74,7 +74,9 @@ def update_user():
     db.session.commit()
     return '', 200
 
+
 @bp.route('/users/all', methods=['GET'])
+@token_auth.login_required
 def users():
     users = User.query.all()
     data = []
