@@ -109,7 +109,7 @@ def static_information():
     return jsonify(info.to_dict())
 
 
-@bp.route('/users/dynamic_information')
+@bp.route('/users/dynamic_information', methods=['GET'])
 @token_auth.login_required
 def dynamic_information():
     user = g.current_user
@@ -121,3 +121,21 @@ def dynamic_information():
     data = [record.to_dict() for record in records]
 
     return jsonify(data)
+
+
+@bp.route('/users/changepw', methods=['POST'])
+@token_auth.login_required
+def changepw():
+    user = g.current_user
+    data = request.get_json() or {}
+
+    if 'current_password' not in data or 'new_password' not in data:
+        return error_response(400, "'current_password' and 'new_password' fields are required.")
+
+    if user.check_password(data['current_password']):
+        user.set_password(data['new_password'])
+        db.session.commit()
+        return jsonify({"message": "Password successfully changed."})
+    
+    return error_response(400, "Current password incorrect. Please try again.")
+    
