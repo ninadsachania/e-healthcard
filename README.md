@@ -190,6 +190,13 @@ No content in the body.
 
 `PUT /api/users` (Authorization required)
 
+**Arguments**
+
+- `firstname: string`
+- `middlename: string`
+- `lastname: string`
+- `address: string` The address of the user
+
 **Response**
 
 - `200 OK` on success
@@ -294,3 +301,50 @@ The response will contain the user's details.
 ```
 
 - `204 NO CONTENT` if there are no dynamic records present
+
+### Change a user's password
+
+**Definition**
+
+`POST /api/users/changepw` (Authorization required)
+
+**Arguments**
+
+- `current_password: string`
+- `new_password: string`
+
+**Response**
+
+- `200 OK` on success
+
+```json
+{
+    "message": "Password successfully changed."
+}
+```
+
+- `401 UNAUTHORIZED` when the token is wrong on not present
+
+```json
+{
+    "error": "Unauthorized"
+}
+```
+
+- `400 BAD REQUEST` when the current password is incorrect.
+
+```json
+{
+    "error": "Bad Request",
+    "message": "Current password incorrect. Please try again."
+}
+```
+
+- `400 BAD REQUEST` if 'current_password' and/or 'new_password' fields are missing in the request
+
+```json
+{
+    "error": "Bad Request",
+    "message": "'current_password' and 'new_password' fields are required."
+}
+```
