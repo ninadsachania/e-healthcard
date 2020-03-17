@@ -111,6 +111,23 @@ def static_information():
     return jsonify(info.to_dict())
 
 
+@bp.route('/users/static_information', methods=['PUT'])
+@token_auth.login_required
+def update_static_information():
+    user = g.current_user
+    static_info = StaticInformation.query.filter_by(user_id=user.id).first()
+    data = request.get_json() or {}
+
+    for key, value in data.items():
+        if hasattr(static_info, key):
+            setattr(static_info, key, value)
+        else:
+            return bad_request("Unknown key: {}".format(key))
+
+    db.session.commit()
+    update_qrcode(user.id)
+    return jsonify(static_info.to_dict())
+
 @bp.route('/users/dynamic_information', methods=['GET'])
 @token_auth.login_required
 def dynamic_information():
