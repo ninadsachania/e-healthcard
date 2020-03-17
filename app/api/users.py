@@ -4,6 +4,7 @@ from app.models import User, Metadata, StaticInformation, DynamicInformation
 from app import db
 from app.api.errors import error_response, bad_request
 from app.api.auth import token_auth
+from qrcode import update_qrcode
 
 
 @bp.route('/users', methods=['GET'])
@@ -81,6 +82,7 @@ def update_user():
             unknown_keys.append(key)
             return bad_request("Unknown key: {}".format(key))
 
+    update_qrcode(user.id)
     db.session.commit()
     return jsonify(g.current_user.to_dict())
 
