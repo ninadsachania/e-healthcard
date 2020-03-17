@@ -3,7 +3,13 @@
 import os
 import json
 import segno
+from app.models import User, StaticInformation
 
+def update_qrcode(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    info = StaticInformation.query.filter_by(user_id=user.id).first()
+
+    return make_qrcode(qrcode_data(user, info))
 
 # Helper function to make QR code
 def qrcode_data(user, static_info):
@@ -28,7 +34,7 @@ def make_qrcode(information: {}):
         '{}.png'.format(information['id'])
     )
 
-    qrcode.save(path, scale=5)
+    return qrcode.save(path, scale=5)
 
 
 def qrcode_path(information: {}):
