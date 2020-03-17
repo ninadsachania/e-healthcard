@@ -11,7 +11,7 @@ from werkzeug.urls import url_parse
 from datetime import datetime
 from app.email import send_password_reset_email
 from functools import wraps
-from qrcode import qrcode_path, make_qrcode, qrcode_data
+from qrcode import qrcode_path, update_qrcode, qrcode_data, make_qrcode
 
 
 @app.route('/index')
@@ -120,11 +120,7 @@ def edit_profile():
         db.session.commit()
 
         # Update the QR code of the user
-        user = User.query.filter_by(id=current_user.id).first()
-        static_info = StaticInformation.query.filter_by(
-            user_id=current_user.id).first()
-
-        make_qrcode(qrcode_data(user, static_info))
+        update_qrcode(current_user.id)
 
         flash('Your changes have been updated!')
 
@@ -224,11 +220,7 @@ def edit_static_info():
             db.session.commit()
 
             # Update the QR code of the user
-            user = User.query.filter_by(id=current_user.id).first()
-            static_info = StaticInformation.query.filter_by(
-                user_id=current_user.id).first()
-
-            make_qrcode(qrcode_data(user, static_info))
+            update_qrcode(current_user.id)
 
             flash('Information updated!')
         else:
