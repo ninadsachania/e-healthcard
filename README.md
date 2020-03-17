@@ -340,7 +340,7 @@ The response will contain the user's details.
 }
 ```
 
-- `400 BAD REQUEST` if 'current_password' and/or 'new_password' fields are missing in the request
+- `400 BAD REQUEST` if `current_password` and/or `new_password` fields are missing in the request
 
 ```json
 {
