@@ -2,7 +2,7 @@
 
 ## Build Instructions
 
-```
+```bash
 $ pip3 install -r requirements.txt
 ```
 
@@ -51,6 +51,19 @@ It will return an empty array (`[]`) if there are no users.
 **Definition**
 
 `POST /api/users/token`
+
+**Arguments**
+
+This API call expects "Basic" authentication scheme. In that:
+
+- The username and the password are combined with a colon (`aladdin:opensesame`).
+- The resulting string is base64 encoded (`YWxhZGRpbjpvcGVuc2VzYW1l`).
+
+Then `Authorization` header is included with the `<type>` as "Basic" and `<credentials>` as the base64 encoded string:
+
+```
+Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
+```
 
 **Response**
 
@@ -262,6 +275,24 @@ The response will contain the user's details.
 ```
 
 - `204 NO CONTENT` if there is no static information
+
+
+### Updating a user's static information
+
+**Definition**
+
+`PUT /api/users/static_information` (Authorization required)
+
+**Arguments**
+
+- `dob: date` Date of Birth
+- `gender: string`
+- `emergency_contact: string` Length should be 10
+- `height: string`
+- `weight: string`
+- `bloodgroup: string`
+- `allergies: string`
+- `current_medication: string`
 
 ### Get a user's dynamic records
 
