@@ -6,9 +6,20 @@
 <div id="message"></div>
 
 <div id="doctors">
-{% for doctor in doctors %}
-    <p>{{ doctor.doctor_id }}, <span id="status-{{ doctor.doctor_id }}">{{ doctor.verified }}</span> <button id="{{ doctor.doctor_id }}">Toggle</button></p>
-{% endfor %}
+<table border='1'>
+    <tr>
+        <th>Doctor ID</th>
+        <th>Verification Status</th>
+        <th></th>
+    </tr>
+    {% for doctor in doctors %}
+        <tr>
+        <td>{{ doctor.doctor_id }}</td>
+        <td><span id="status-{{ doctor.doctor_id }}">{{ doctor.verified }}</span></td>
+        <td><button id="{{ doctor.doctor_id }}">Toggle</button></td>
+        </tr>
+    {% endfor %}
+</table>
 </div>
 
 
