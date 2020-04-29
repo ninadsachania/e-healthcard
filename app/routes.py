@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
     PasswordResetForm, StaticInformationForm, ResetPasswordRequestForm, \
@@ -572,6 +572,25 @@ def view_all_records():
         title='All Dynamic Records'
     )
 
+
+@app.route('/admin')
+def admin():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    doctors = Doctor.query.all()
+    return render_template('admin.html', title='Admin', doctors=doctors)
+
+
+@app.route('/admin/verify', methods=['POST'])
+def verify_doctors():
+    args = request.get_json()
+    doctor = Doctor.query.filter_by(doctor_id=args['id']).first()
+    doctor.verified = not doctor.verified
+
+    db.session.add(doctor)
+    db.session.commit()
+    return jsonify({'message': 'Successfully updated', 'account_state': str(doctor.verified)})
 
 if __name__ == '__main__':
     app.run(debug=True)
