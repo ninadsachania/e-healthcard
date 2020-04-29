@@ -22,7 +22,8 @@ class RegistrationForm(FlaskForm):
     phone_number = TelField('Phone Number:', validators=[DataRequired()])
     email = EmailField('Email:', validators=[DataRequired(), Email()])
     address = TextAreaField('Address:', validators=[DataRequired()])
-    password = PasswordField('Password:', validators=[DataRequired()])
+    password = PasswordField('Password:', validators=[DataRequired(),
+        Length(min=9, message='Minimum length of the password should be %(min)d.')])
     password2 = PasswordField('Repeat Password:', validators=[
         DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
