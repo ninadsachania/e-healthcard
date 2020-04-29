@@ -573,16 +573,28 @@ def view_all_records():
     )
 
 
-@app.route('/admin')
-def admin():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
+def is_admin(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_administrator:
+            flash('You are not an admin.')
+            return redirect(url_for('index'))
 
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+@app.route('/admin')
+@login_required
+@is_admin
+def admin():
     doctors = Doctor.query.all()
     return render_template('admin.html', title='Admin', doctors=doctors)
 
 
 @app.route('/admin/verify', methods=['POST'])
+@login_required
+@is_admin
 def verify_doctors():
     args = request.get_json()
     doctor = Doctor.query.filter_by(doctor_id=args['id']).first()
@@ -591,6 +603,7 @@ def verify_doctors():
     db.session.add(doctor)
     db.session.commit()
     return jsonify({'message': 'Successfully updated', 'account_state': str(doctor.verified)})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
