@@ -9,7 +9,7 @@ from app.models import User, StaticInformation, Metadata, Doctor, \
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
-from app.email import send_password_reset_email
+from app.email import send_password_reset_email, send_email
 from functools import wraps
 from qrcode import qrcode_path, update_qrcode, qrcode_data, make_qrcode
 
@@ -92,10 +92,37 @@ def register():
         db.session.add(m)
         db.session.commit()
 
+        token = user.generate_confirmation_token()
+        confirm_url = url_for('confirm_email', token=token, _external=True)
+        html = render_template('email/activate_account.html', confirm_url=confirm_url)
+        text_body = render_template('email/activate_account.txt', confirm_url=confirm_url)
+        subject = 'Please confirm your email'
+        send_email(subject, app.config['ADMINS'][0], [user.email], text_body, html)
+
         flash('Congratulations, you are now a registered user')
         return redirect(url_for('index'))
 
     return render_template('register.html', form=form, title="Registration")
+
+
+@app.route('/confirm/<token>')
+@login_required
+def confirm_email(token):
+    try:
+        email = User.confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or expired.', 'danger')
+
+    user = User.query.filter_by(email=email).first_or_404()
+    if user.confirmed:
+        flash('Account already confirmed. Please login.', 'success')
+    else:
+        user.confirmed = True
+        db.session.add(user)
+        db.session.commit()
+
+        flash('You have confirmed your account. Thanks!', 'success')
+    return redirect(url_for('index'))
 
 
 @app.route('/user/edit', methods=['POST', 'GET'])
