@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Admin Panel</h1>
+
+<div id="message"></div>
+
+<div id="doctors">
+{% for doctor in doctors %}
+    <p>{{ doctor.doctor_id }}, <span id="status-{{ doctor.doctor_id }}">{{ doctor.verified }}</span> <button id="{{ doctor.doctor_id }}">Toggle</button></p>
+{% endfor %}
+</div>
+
+
+<script>
+    const buttons = $('#doctors button');
+    $.each(buttons, (index, value) => {
+        console.log(value.id);
+        value.onclick = function(e) {
+            $.ajax({
+                url: '/admin/verify',
+                data: JSON.stringify({
+                    id: this.id,
+                }),
+                type: 'POST',
+                contentType: "application/json",
+                dataType: "json",
+                success: data => {
+                    console.log(data);
+                    $('#status-' + this.id).html(data['account_state']);
+                    const msg = $('#message');
+                    msg.html(msg.html() + "<br>" + data['message']);
+                    setTimeout(() => {
+                        msg.html('');
+                    }, 2000);
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}
