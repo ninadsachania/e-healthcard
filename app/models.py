@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     aadhar_card = db.Column(db.String(12), index=True, unique=True)
     phone_number = db.Column(db.String(10), index=True, unique=True)
-    confirmed = db.Column(db.Boolean, default=True)
+    confirmed = db.Column(db.Boolean, default=False)
     address = db.Column(db.String(512))
     rfid = db.Column(db.String(7), index=True, unique=True)
     password_hash = db.Column(db.String(128))
