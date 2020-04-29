@@ -57,9 +57,6 @@ class EditProfileForm(FlaskForm):
     firstname = StringField('Firstname:', validators=[DataRequired()])
     middlename = StringField('Middlename:', validators=[DataRequired()])
     lastname = StringField('Lastname:', validators=[DataRequired()])
-    aadhar_card = StringField('Aadhar Card:', validators=[DataRequired()])
-    phone_number = TelField('Phone Number:', validators=[DataRequired()])
-    email = EmailField('Email:', validators=[DataRequired(), Email()])
     address = TextAreaField('Address:', validators=[DataRequired()])
     submit = SubmitField('Update')
 

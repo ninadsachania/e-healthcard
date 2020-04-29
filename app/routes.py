@@ -108,9 +108,6 @@ def edit_profile():
         current_user.firstname = form.firstname.data
         current_user.middlename = form.middlename.data
         current_user.lastname = form.lastname.data
-        current_user.aadhar_card = form.aadhar_card.data
-        current_user.phone_number = form.phone_number.data
-        current_user.email = form.email.data
         current_user.address = form.address.data
 
         m = Metadata.query.filter_by(id=current_user.id).first()
@@ -130,9 +127,6 @@ def edit_profile():
         form.firstname.data = current_user.firstname
         form.middlename.data = current_user.middlename
         form.lastname.data = current_user.lastname
-        form.aadhar_card.data = current_user.aadhar_card
-        form.phone_number.data = current_user.phone_number
-        form.email.data = current_user.email
         form.address.data = current_user.address
 
     return render_template('edit_profile.html', title='Edit Profile', form=form)
