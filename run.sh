@@ -9,4 +9,5 @@ export MAIL_USE_TLS=1
 # export MAIL_USERNAME=''
 # export MAIL_PASSWORD=''
 
+chmod u+x ./main.py
 ./main.py
