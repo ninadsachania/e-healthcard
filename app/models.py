@@ -28,6 +28,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     token = db.Column(db.String(32), index=True, unique=True)
     is_token_valid = db.Column(db.Boolean, default=False)
+    is_administrator = db.Column(db.Boolean, default=False)
 
     def get_token(self):
         if self.is_token_valid:
