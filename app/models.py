@@ -7,6 +7,7 @@ import jwt
 from time import time
 import os
 import base64
+from itsdangerous import URLSafeTimedSerializer
 
 
 @login.user_loader
@@ -81,6 +82,23 @@ class User(UserMixin, db.Model):
         except:
             return
         return User.query.get(id)
+
+    def generate_confirmation_token(self):
+        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        return serializer.dumps(self.email, salt=app.config['SECURITY_PASSWORD_SALT'])
+
+    @staticmethod
+    def confirm_token(token, expiration=3600):
+        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        try:
+            email = serializer.loads(
+                token,
+                salt=app.config['SECURITY_PASSWORD_SALT'],
+                max_age=expiration
+            )
+        except:
+            return False
+        return email
 
     def to_dict(self):
         data = {
