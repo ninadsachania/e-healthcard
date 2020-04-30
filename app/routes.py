@@ -125,6 +125,16 @@ def confirm_email(token):
     return redirect(url_for('index'))
 
 
+@app.route('/unconfirmed')
+@login_required
+def unconfirmed():
+    if current_user.confirmed:
+        return redirect(url_for('index'))
+
+    flash('Please confirm your account.', 'warning')
+    return render_template('unconfirmed.html')
+
+
 @app.route('/user/edit', methods=['POST', 'GET'])
 @login_required
 def edit_profile():
