@@ -135,6 +135,17 @@ def unconfirmed():
     return render_template('unconfirmed.html')
 
 
+def check_email_confirmed(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if not current_user.confirmed:
+            flash('Please confirm your account!', 'warning')
+            return redirect(url_for('unconfirmed'))
+        return func(*args, **kwargs)
+
+    return decorated_function
+
+
 @app.route('/user/edit', methods=['POST', 'GET'])
 @login_required
 def edit_profile():
