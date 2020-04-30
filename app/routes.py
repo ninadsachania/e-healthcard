@@ -49,7 +49,7 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             # 'netloc' is the first level domain (www.example.com)
-            return redirect(url_for('index'))
+            return redirect(url_for('unconfirmed'))
         return redirect(next_page)
 
     return render_template('login.html', form=form, title="Login")
@@ -134,6 +134,19 @@ def unconfirmed():
 
     flash('Please confirm your account.', 'warning')
     return render_template('unconfirmed.html')
+
+
+@app.route('/resend')
+@login_required
+def resend_email_confirmation():
+    token = current_user.generate_confirmation_token()
+    confirm_url = url_for('confirm_email', token=token, _external=True)
+    html = render_template('email/activate_account.html', confirm_url=confirm_url)
+    text_body = render_template('email/activate_account.txt', confirm_url=confirm_url)
+    subject = 'Please confirm your email'
+    send_email(subject, app.config['ADMINS'][0], [current_user.email], text_body, html)
+    flash('A new confirmation email has been sent.', 'success')
+    return redirect(url_for('unconfirmed'))
 
 
 @app.route('/user/edit', methods=['POST', 'GET'])
