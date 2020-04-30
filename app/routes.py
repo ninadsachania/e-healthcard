@@ -10,8 +10,9 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
 from app.email import send_password_reset_email, send_email
-from functools import wraps
 from qrcode import qrcode_path, update_qrcode, qrcode_data, make_qrcode
+from app.decorators import is_verified_doctor, is_admin, is_doctor, \
+    check_email_confirmed
 
 
 @app.route('/index')
@@ -100,7 +101,7 @@ def register():
         send_email(subject, app.config['ADMINS'][0], [user.email], text_body, html)
 
         flash('Congratulations, you are now a registered user')
-        return redirect(url_for('index'))
+        return redirect(url_for('unconfirmed'))
 
     return render_template('register.html', form=form, title="Registration")
 
@@ -115,7 +116,7 @@ def confirm_email(token):
 
     user = User.query.filter_by(email=email).first_or_404()
     if user.confirmed:
-        flash('Account already confirmed. Please login.', 'success')
+        flash('Account already confirmed.', 'success')
     else:
         user.confirmed = True
         db.session.add(user)
@@ -133,17 +134,6 @@ def unconfirmed():
 
     flash('Please confirm your account.', 'warning')
     return render_template('unconfirmed.html')
-
-
-def check_email_confirmed(func):
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        if not current_user.confirmed:
-            flash('Please confirm your account!', 'warning')
-            return redirect(url_for('unconfirmed'))
-        return func(*args, **kwargs)
-
-    return decorated_function
 
 
 @app.route('/user/edit', methods=['POST', 'GET'])
@@ -380,17 +370,6 @@ def qrcode():
 
 
 # Doctor
-def is_doctor(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not Doctor.query.filter_by(user_id=current_user.id).first():
-            flash("You do not have permission to view that page", "warning")
-            return redirect(url_for('for_doctors'))
-
-        return f(*args, **kwargs)
-    return decorated_function
-
-
 @app.route('/for_doctors')
 @app.route('/doctor/')
 def for_doctors():
@@ -439,19 +418,6 @@ def doctor_profile():
     }
 
     return render_template('doctor_profile.html', data=data, title="Doctor's Profile")
-
-
-def is_verified_doctor(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        doctor = Doctor.query.filter_by(user_id=current_user.id).first()
-        is_verified = doctor.verified
-
-        if not is_verified:
-            return render_template('not_verified.html')
-
-        return f(*args, **kwargs)
-    return decorated_function
 
 
 @app.route('/doctor/add_record', methods=['GET', 'POST'])
@@ -613,17 +579,6 @@ def view_all_records():
         records=records,
         title='All Dynamic Records'
     )
-
-
-def is_admin(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not current_user.is_administrator:
-            flash('You are not an admin.')
-            return redirect(url_for('index'))
-
-        return f(*args, **kwargs)
-    return decorated_function
 
 
 @app.route('/admin')
