@@ -1,95 +1,109 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
-
-<h1>Enter records:</h1>
+<h1 class="display-4">Enter records</h1>
 <form method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <table>
-        <tr>
-            <td>{{ form.user_id.label }}</td>
-            <td>{{ form.user_id() }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.user_id.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+  {{ form.hidden_tag() }}
+  <table>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.user_id.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.user_id(class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.user_id.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.doctor_id.label }}</td>
-            <td>{{ form.doctor_id(disabled=True) }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.doctor_id.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.doctor_id.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.doctor_id(disabled=True, class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.doctor_id.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.symptoms.label }}</td>
-            <td>{{ form.symptoms() }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.symptoms.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.symptoms.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.symptoms(class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.symptoms.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.diagnosis.label }}</td>
-            <td>{{ form.diagnosis() }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.diagnosis.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.diagnosis.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.diagnosis(class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.diagnosis.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.prescribed_medication.label }}</td>
-            <td>{{ form.prescribed_medication() }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.prescribed_medication.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.prescribed_medication.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.prescribed_medication(class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.prescribed_medication.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.notes.label }}</td>
-            <td>{{ form.notes() }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.notes.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.notes.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.notes(class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.notes.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td></td>
-            <td>{{ form.submit() }}</td>
-        </tr>
-    </table>
+    <tr>
+      <td>{{ form.submit(class_="btn btn-primary mt-3 mb-3") }}</td>
+    </tr>
+  </table>
 </form>
-
 
 {% endblock %}
