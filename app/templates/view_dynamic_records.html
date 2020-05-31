@@ -1,111 +1,102 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h1>View dynamic records</h1>
+{% extends 'base.html' %} {% block content %}
+<h1 class="display-4">View dynamic records</h1>
 <form method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <table>
-        <tr>
-            <td>{{ form.id.label }}</td>
-            <td>{{ form.id() }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.id.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+  {{ form.hidden_tag() }}
+  <table>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.id.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.id(class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.id.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td></td>
-            <td>{{ form.submit() }}</td>
-        </tr>
-    </table>
+    <tr>
+      <td>{{ form.submit(class_="btn btn-primary mt-3 mb-3") }}</td>
+    </tr>
+  </table>
 </form>
 
 {% if records %}
-    <h2>Details:</h2>
-    <table>
-        <tr>
-            <td colspan="2"><img src="{{ user.avatar() }}"></td>
-        </tr>
-        <tr>
-            <td>Firstname: </td>
-            <td>{{ user.firstname }}</td>
-        </tr>
+<h1 class="display-5 mt-5">Details</h1>
+<table class="table table-sm">
+  <tr>
+    <td>Firstname</td>
+    <td>{{ user.firstname }}</td>
+  </tr>
 
-        <tr>
-            <td>Middlename: </td>
-            <td>{{ user.middlename }}</td>
-        </tr>
+  <tr>
+    <td>Middlename</td>
+    <td>{{ user.middlename }}</td>
+  </tr>
 
-        <tr>
-            <td>Lastname: </td>
-            <td>{{ user.lastname }}</td>
-        </tr>
+  <tr>
+    <td>Lastname</td>
+    <td>{{ user.lastname }}</td>
+  </tr>
 
-        <tr>
-            <td>Email: </td>
-            <td>{{ user.email }}</td>
-        </tr>
+  <tr>
+    <td>Email 📧</td>
+    <td>{{ user.email }}</td>
+  </tr>
 
-        <tr>
-            <td>Aadhar Card: </td>
-            <td>{{ user.aadhar_card }}</td>
-        </tr>
+  <tr>
+    <td>Aadhar Card 💳</td>
+    <td>
+      {{ "{0} {1} {2}".format(user.aadhar_card[:4], user.aadhar_card[4:8],
+      user.aadhar_card[8:]) }}
+    </td>
+  </tr>
 
-        <tr>
-            <td>Phone Number: </td>
-            <td>{{ user.phone_number }}</td>
-        </tr>
+  <tr>
+    <td>Phone Number ☎️</td>
+    <td>+91 {{ user.phone_number }}</td>
+  </tr>
 
-        <tr>
-            <td>Address: </td>
-            <td>{{ user.address }}</td>
-        </tr>
-    </table>
+  <tr>
+    <td>Address 🏠</td>
+    <td>{{ user.address }}</td>
+  </tr>
+</table>
 
-    <hr>
+<h1 class="display-5 mt-5">Dynamic Records</h1>
+{% for record in records %}
+<h3 class="mt-4">
+  <small class="text-muted">Case</small>
+  #{{ record['id'] }}
+</h3>
+<table class="table table-sm">
+  <tr>
+    <td>Symptoms</td>
+    <td>{{ record['symptoms'] }}</td>
+  </tr>
 
-    <h2>Dynamic Records:</h2>
-    {% for record in records %}
-        <table>
-            <tr>
-                <td>ID:</td>
-                <td>{{ record['id'] }}</td>
-            </tr>
+  <tr>
+    <td>Diagnosis</td>
+    <td>{{ record['diagnosis'] }}</td>
+  </tr>
 
-            <tr>
-                <td>Symptoms:</td>
-                <td>{{ record['symptoms'] }}</td>
-            </tr>
+  <tr>
+    <td>Prescribed Medication 💊</td>
+    <td>{{ record['prescribed_medication'] }}</td>
+  </tr>
 
-            <tr>
-                <td>Diagnosis:</td>
-                <td>{{ record['diagnosis'] }}</td>
-            </tr>
+  <tr>
+    <td>Notes 📝</td>
+    <td>{{ record['notes'] }}</td>
+  </tr>
 
-            <tr>
-                <td>Prescribed Medication:</td>
-                <td>{{ record['prescribed_medication'] }}</td>
-            </tr>
-
-            <tr>
-                <td>Notes:</td>
-                <td>{{ record['notes'] }}</td>
-            </tr>
-
-            <tr>
-                <td>Date created:</td>
-                <td>{{ record['date_created'] }}</td>
-            </tr>
-        </table>
-
-        <hr>
-    {% endfor %}
-{% endif %}
-
-
-{% endblock %}
+  <tr>
+    <td>Date created</td>
+    <td>{{ record['date_created'] }}</td>
+  </tr>
+</table>
+{% endfor %} {% endif %} {% endblock %}
