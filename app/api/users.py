@@ -5,6 +5,7 @@ from app import db
 from app.api.errors import error_response, bad_request
 from app.api.auth import token_auth
 from qrcode import update_qrcode
+from app.email import send_password_reset_email
 
 
 @bp.route('/users', methods=['GET'])
@@ -78,7 +79,7 @@ def update_user():
         if hasattr(user, key):
             setattr(user, key, value)
         else:
-            #TODO: Return a different error code when an unknown attribute is present
+            # TODO: Return a different error code when an unknown attribute is present
             unknown_keys.append(key)
             return bad_request("Unknown key: {}".format(key))
 
@@ -155,6 +156,17 @@ def changepw():
         user.set_password(data['new_password'])
         db.session.commit()
         return jsonify({"message": "Password successfully changed."})
-    
+
     return error_response(400, "Current password incorrect. Please try again.")
-    
+
+
+@bp.route('/users/reset_password_request', methods=['POST'])
+def reset_password_request():
+    data = request.get_json() or {}
+
+    user = User.query.filter_by(email=data['email']).first()
+    if not user:
+        return error_response(400, "Sorry! Email '{}' not found.".format(data['email']))
+
+    send_password_reset_email(user)
+    return jsonify({'message': 'Check your email for instructions to reset your password.'})
