@@ -1,49 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h1 class="display-4">Static information</h1>
+{% if info %}
+<table class='table table-sm'>
+    <tr>
+        <td>Date of Birth 👶</td>
+        <td>{{ info.dob }}</td>
+    </tr>
 
+    <tr>
+        <td>Gender</td>
+        <td>{{ info.gender }}</td>
+    </tr>
 
-<h1>Static information</h1>
-    {% if info %}
-        <table border='1'>
-            <tr>
-                <td>Date of Birth:</td>
-                <td>{{ info.dob }}</td>
-            </tr>
+    <tr>
+        <td>Emergency Contact 📞</td>
+        <td>+91 {{ info.emergency_contact }}</td>
+    </tr>
 
-            <tr>
-                <td>Gender:</td>
-                <td>{{ info.gender }}</td>
-            </tr>
+    <tr>
+        <td>Height (cm)</td>
+        <td>{{ info.height }} cm</td>
+    </tr>
 
-            <tr>
-                <td>Emergency Contact:</td>
-                <td>{{ info.emergency_contact }}</td>
-            </tr>
+    <tr>
+        <td>Weight (kg)</td>
+        <td>{{ info.weight }} kg</td>
+    </tr>
 
-            <tr>
-                <td>Height (cm):</td>
-                <td>{{ info.height }}</td>
-            </tr>
+    <tr>
+        <td>Allergies</td>
+        <td>{{ info.allergies }}</td>
+    </tr>
 
-            <tr>
-                <td>Weight (kg):</td>
-                <td>{{ info.weight }}</td>
-            </tr>
-
-            <tr>
-                <td>Allergies:</td>
-                <td>{{ info.allergies }}</td>
-            </tr>
-
-            <tr>
-                <td>Current Medication:</td>
-                <td>{{ info.current_medication }}</td>
-            </tr>
-        </table>
-        <p><a href="{{ url_for('edit_static_info') }}">Edit</a></p>
-    {% else %}
-        <p>You haven't entered your medical information yet.</p>
-        <p><a href="{{ url_for('edit_static_info') }}">Click here to enter your medical information</a></p>
-    {% endif %}
+    <tr>
+        <td>Current Medication 💊</td>
+        <td>{{ info.current_medication }}</td>
+    </tr>
+</table>
+<p><a href="{{ url_for('edit_static_info') }}">Edit</a></p>
+{% else %}
+<p>You haven't entered your medical information yet.</p>
+<p><a href="{{ url_for('edit_static_info') }}">Click here to enter your medical information</a></p>
+{% endif %}
 {% endblock %}
