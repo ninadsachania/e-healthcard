@@ -1,129 +1,168 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h1>Register</h1>
+{% extends 'base.html' %} {% block content %}
+<h1 class="display-4">Register</h1>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <table>
-        <tr>
-            <td>{{ form.firstname.label }}</td>
-            <td>{{ form.firstname(size=32, autofocus=True) }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.firstname.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+        <div class="form-group">
+            <tr>
+                <td><label>{{ form.firstname.label }}</label></td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.firstname(size=32, autofocus=True, class_="form-control") }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.firstname.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
+        <div class="form-group">
+            <tr>
+                <td>{{ form.middlename.label }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.middlename(size=32, class_="form-control") }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.middlename.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
+        <div class="form-group">
+            <tr>
+                <td>{{ form.lastname.label }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.lastname(size=32, class_="form-control") }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.lastname.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
+        <div class="form-group">
+            <tr>
+                <td>{{ form.aadhar_card.label }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.aadhar_card(size=32, maxlength="12", class_="form-control",
+          placeholder="123456789012") }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.aadhar_card.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
+        <div class="form-group">
+            <tr>
+                <td>{{ form.phone_number.label }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.phone_number(size=32, maxlength="10", class_="form-control",
+          placeholder="9099864584") }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.phone_number.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
+        <div class="form-group">
+            <tr>
+                <td>{{ form.email.label }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.email(size=32, class_="form-control",
+          placeholder="name@example.com") }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.email.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
+        <div class="form-group">
+            <tr>
+                <td>{{ form.address.label }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.address(size=32, cols="30", rows="5", class_="form-control")
+          }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.address.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
+        <div class="form-group">
+            <tr>
+                <td>{{ form.password.label }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password(size=32, class_="form-control") }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.password.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
+
+        <div class="form-group">
+            <tr>
+                <td>{{ form.password2.label }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password2(size=32, class_="form-control") }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {% for error in form.password2.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </div>
 
         <tr>
-            <td>{{ form.middlename.label }}</td>
-            <td>{{ form.middlename(size=32) }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.middlename.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-
-        <tr>
-            <td>{{ form.lastname.label }}</td>
-            <td>{{ form.lastname(size=32) }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.lastname.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-
-        <tr>
-            <td>{{ form.aadhar_card.label }}</td>
-            <td>{{ form.aadhar_card(size=32, maxlength="12") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.aadhar_card.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-
-        <tr>
-            <td>{{ form.phone_number.label }}</td>
-            <td>{{ form.phone_number(size=32, maxlength="10") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.phone_number.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-
-        <tr>
-            <td>{{ form.email.label }}</td>
-            <td>{{ form.email(size=32) }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.email.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-
-        <tr>
-            <td>{{ form.address.label }}</td>
-            <td>{{ form.address(size=32, cols="30", rows="5") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.address.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-
-        <tr>
-            <td>{{ form.password.label }}</td>
-            <td>{{ form.password(size=32) }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.password.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-
-        <tr>
-            <td>{{ form.password2.label }}</td>
-            <td>{{ form.password2(size=32) }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.password2.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-
-        <tr>
-            <td>{{ form.submit() }}</td>
+            <td>{{ form.submit(class_="btn btn-primary mt-3 mb-3") }}</td>
         </tr>
     </table>
 </form>
