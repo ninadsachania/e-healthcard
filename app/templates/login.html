@@ -1,9 +1,6 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h1 class="display-3">Login</h1>
+{% extends 'base.html' %} {% block content %}
+<h1 class="display-4">Login</h1>
 <form action="" method="post" novalidate>
-    
     {{ form.hidden_tag() }}
     <table>
         <div class="form-group">
@@ -11,10 +8,17 @@
                 <td><label>{{ form.username.label }}</label></td>
             </tr>
             <tr>
-                <td>{{ form.username(size=32, autofocus=True, class="form-control") }}</td>
+                <td>
+                    {{ form.username(size=32, autofocus=True, class_="form-control",
+          placeholder="Email/Phone Number") }}
+                </td>
             </tr>
             <tr>
-                <td><small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small></td>
+                <td>
+                    <small class="form-text text-muted">
+                        We'll never share your information with anyone else.
+                    </small>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -46,10 +50,9 @@
         </tr>
 
         <tr>
-            <td>{{ form.submit(class_="btn btn-primary") }}</td>
+            <td>{{ form.submit(class_="btn btn-primary mt-3 mb-3") }}</td>
         </tr>
     </table>
-
 </form>
 
 <p>
