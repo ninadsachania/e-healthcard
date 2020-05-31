@@ -379,3 +379,32 @@ The response will contain the user's details.
     "message": "'current_password' and 'new_password' fields are required."
 }
 ```
+
+### Reset forgotten password
+
+**Definition**
+
+`POST /api/users/reset_password_request`
+
+**Arguments**
+
+- `email: string` The email id of the user
+
+**Response**
+
+- `200 OK` on success
+
+```json
+{
+    "message": "Check your email for instructions to reset your password."
+}
+```
+
+- `400 BAD REQUEST` when a email of a non-existent account is passed as arguments
+
+```json
+{
+    "error": "Bad Request",
+    "message": "Sorry! Email 'xyz@gmail.com' not found."
+}
+```
