@@ -1,118 +1,151 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
+<h1 class="display-4">Edit Static Information</h1>
 <form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <table>
-        <tr>
-            <td>{{ form.dob.label }}</td>
-            <td>{{ form.dob(autofocus=True, size="32") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.dob.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
-        
-        <tr>
-            <td>{{ form.gender.label }}</td>
-            <td>{{ form.gender() }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.gender.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+  {{ form.hidden_tag() }}
+  <table>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.dob.label }}</td>
+      </tr>
+      <tr>
+        <td>
+          {{ form.dob(autofocus=True, size="32", class_="form-control") }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.dob.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.emergency_contact.label }}</td>
-            <td>{{ form.emergency_contact(size="32", maxlength="10", minlength="10") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.emergency_contact.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.gender.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.gender(class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.gender.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.height.label }}</td>
-            <td>{{ form.height(size="32") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.height.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.emergency_contact.label }}</td>
+      </tr>
+      <tr>
+        <td>
+          {{ form.emergency_contact(size="32", maxlength="10", minlength="10",
+          class_="form-control") }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.emergency_contact.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.weight.label }}</td>
-            <td>{{ form.weight(size="32") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.weight.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.height.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.height(size="32", class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.height.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.bloodgroup.label }}</td>
-            <td>{{ form.bloodgroup(size="32", maxlength="3") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.bloodgroup.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.weight.label }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.weight(size="32", class_="form-control") }}</td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.weight.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.allergies.label }}</td>
-            <td>{{ form.allergies(rows="5", cols="30") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.allergies.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.bloodgroup.label }}</td>
+      </tr>
+      <tr>
+        <td>
+          {{ form.bloodgroup(size="32", maxlength="3", class_="form-control") }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.bloodgroup.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td>{{ form.current_medication.label }}</td>
-            <td>{{ form.current_medication(rows="5", cols="30") }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                {% for error in form.current_medication.errors %}
-                <span class="form-error">[{{ error }}]</span>
-                {% endfor %}
-            </td>
-        </tr>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.allergies.label }}</td>
+      </tr>
+      <tr>
+        <td>
+          {{ form.allergies(rows="5", cols="30", class_="form-control") }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.allergies.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
 
-        <tr>
-            <td></td>
-            <td>{{ form.submit() }}</td>
-        </tr>
-        
-    </table>
+    <div class="form-group">
+      <tr>
+        <td>{{ form.current_medication.label }}</td>
+      </tr>
+      <tr>
+        <td>
+          {{ form.current_medication(rows="5", cols="30", class_="form-control")
+          }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {% for error in form.current_medication.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </td>
+      </tr>
+    </div>
+
+    <tr>
+      <td>{{ form.submit(class_="btn btn-primary mt-3 mb-3") }}</td>
+    </tr>
+  </table>
 </form>
 {% endblock %}
