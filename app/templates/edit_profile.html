@@ -1,66 +1,80 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Edit Profile:</h1>
+<h1 class="display-4">Edit Profile</h1>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <table>
+		<div class="form-group">
+        <tr>
+                <td>{{ form.firstname.label }}</td>
+		</tr>
+		<tr>
+                <td>{{ form.firstname(size=32, autofocus=True, class_="form-control") }}</td>
+            </tr>
             <tr>
-                    <td>{{ form.firstname.label }}</td>
-                    <td>{{ form.firstname(size=32, autofocus=True) }}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% for error in form.firstname.errors %}
-                        <span class="form-error">[{{ error }}]</span>
-                        {% endfor %}
-                    </td>
-                </tr>
-        
-                <tr>
-                    <td>{{ form.middlename.label }}</td>
-                    <td>{{ form.middlename(size=32) }}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% for error in form.middlename.errors %}
-                        <span class="form-error">[{{ error }}]</span>
-                        {% endfor %}
-                    </td>
-                </tr>
-        
-                <tr>
-                    <td>{{ form.lastname.label }}</td>
-                    <td>{{ form.lastname(size=32) }}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% for error in form.lastname.errors %}
-                        <span class="form-error">[{{ error }}]</span>
-                        {% endfor %}
-                    </td>
-                </tr>
-        
-                <tr>
-                    <td>{{ form.address.label }}</td>
-                    <td>{{ form.address(size=32, cols="30", rows="5") }}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% for error in form.address.errors %}
-                        <span class="form-error">[{{ error }}]</span>
-                        {% endfor %}
-                    </td>
-                </tr>
-        
-                <tr>
-                    <td></td>
-                    <td>{{ form.submit() }}</td>
-                </tr>
+                <td>
+                    {% for error in form.firstname.errors %}
+                    <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+		</div>
+
+		<div class="form-group">
+            <tr>
+                <td>{{ form.middlename.label }}</td>
+			</tr>
+			<tr>
+                <td>{{ form.middlename(size=32, class_="form-control") }}</td>
+            </tr>
+            <tr>
+
+                <td>
+                    {% for error in form.middlename.errors %}
+                    <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+			<div>
+
+		<div class="form-group">
+            <tr>
+                <td>{{ form.lastname.label }}</td>
+			</tr>
+			<tr>
+                <td>{{ form.lastname(size=32, class_="form-control") }}</td>
+            </tr>
+            <tr>
+
+                <td>
+                    {% for error in form.lastname.errors %}
+                    <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+		</div>
+
+		<div class="form-group">
+            <tr>
+                <td>{{ form.address.label }}</td>
+			</tr>
+			<tr>
+                <td>{{ form.address(size=32, cols="30", rows="5", class_="form-control") }}</td>
+            </tr>
+            <tr>
+
+                <td>
+                    {% for error in form.address.errors %}
+                    <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+		</div>
+
+            <tr>
+                <td>{{ form.submit(class_="btn btn-primary mt-3 mb-3") }}</td>
+            </tr>
     </table>
 </form>
 
