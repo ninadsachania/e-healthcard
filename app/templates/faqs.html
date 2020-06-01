@@ -1,42 +1,159 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h1>FAQs</h1>
-
-<h4>How can I join E-HealthCard?</h4>
-
-<p>You can register for the E-HealthCard by visiting by visiting <a target="_blank" href="{{ url_for('register')}}">here</a>.</p>
-
-<h4>How can I join E-HealthCard as a doctor?</h4>
-
-<p>First, you register yourself as a regular user, and then click <a target="_blank" href="{{ url_for('doctor_registration') }}">here</a>.</p>
+{% extends 'base.html' %} {% block content %}
+<h1 class="display-4 mb-4">FAQs</h1>
 
 
-<h4>Who benfits from E-HealthCard?</h4>
+<div id="accordion">
+    <div class="card mb-2">
+        <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                    aria-controls="collapseOne">
+                    How can I join E-HealthCard?
+                </button>
+            </h5>
+        </div>
 
-<p>E-HealthCard is primarily useful to all its users to digitally store and maintain their medical history. However, it is also useful to the doctors (to refer to patients’s data anytime), emergency responders and chemists.</p>
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                You can register for the E-HealthCard by visiting by visiting
+                <a target="_blank" href="{{ url_for('register')}}">here</a>.
+            </div>
+        </div>
+    </div>
+    <div class="card mb-2">
+        <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="false" aria-controls="collapseTwo">
+                    How can I join E-HealthCard as a doctor?
+                </button>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                First, you register yourself as a regular user, and then click
+                <a target="_blank" href="{{ url_for('doctor_registration') }}">here</a>.
+            </div>
+        </div>
+    </div>
+    <div class="card mb-2">
+        <div class="card-header" id="headingThree">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree"
+                    aria-expanded="false" aria-controls="collapseThree">
+                    Who benfits from E-HealthCard?
+                </button>
+            </h5>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+            <div class="card-body">
+                E-HealthCard is primarily useful to all its users to digitally store and
+                maintain their medical history. However, it is also useful to the doctors (to
+                refer to patients’s data anytime), emergency responders and chemists.
+            </div>
+        </div>
+    </div>
+    <div class="card mb-2">
+        <div class="card-header" id="headingFour">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour"
+                    aria-expanded="false" aria-controls="collapseFour">
+                    From where can I change my dynamic records?
+                </button>
+            </h5>
+        </div>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+            <div class="card-body">
+                You cannot change your dynamic records. The data is added by the doctors as a
+                part of their consultation and diagnostic process. You can make changes to
+                your profile information and your static information.
+            </div>
+        </div>
+    </div>
 
-<h4>From where can I change my dynamic records?</h4>
+    <div class="card mb-2">
+        <div class="card-header" id="headingFive">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive"
+                    aria-expanded="false" aria-controls="collapseFive">
 
-<p>You cannot change your dynamic records. The data is added by the doctors as a part of their consultation and diagnostic process. You can make changes to your profile information and your static information.</p>
+                    How do I delete my account?
+                </button>
+            </h5>
+        </div>
+        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+            <div class="card-body">
+                Currently, an account data cannot be deleted from our system. We are working
+                on that feature.
+            </div>
+        </div>
+    </div>
 
-<h4>How do I delete my account?</h4>
+    <div class="card mb-2">
+        <div class="card-header" id="headingSix">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix"
+                    aria-expanded="false" aria-controls="collapseSix">
 
-<p>Currently, an account data cannot be deleted from our system. We are working on that feature.</p>
+                    I have applied for a doctor's account and it still hasn't been approved. Where
+                    and who do I contact?
+                </button>
+            </h5>
+        </div>
+        <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+            <div class="card-body">
+                Just shoot us a mail <a href="mailto:ninad.sachania@gmail.com">here</a> with
+                your id and name.
+            </div>
+        </div>
+    </div>
 
-<h4>I have applied for a doctor's account and it still hasn't been approved. Where and who do I contact?</h4>
+    <div class="card mb-2">
+        <div class="card-header" id="headingSeven">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSeven"
+                    aria-expanded="false" aria-controls="collapseSeven">
+                    Who will be able to access my medical history?
+                </button>
+            </h5>
+        </div>
+        <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
+            <div class="card-body">
+                Your static information will be available to everyone provided your
+                &lsquo;id&rsquo;. Your dynamic information will only be visible to you and
+                doctors.
+            </div>
+        </div>
+    </div>
 
-<p>Just shoot us a mail <a href="mailto:ninad.sachania@gmail.com">here</a> with your id and name.</p>
+    <div class="card mb-2">
+        <div class="card-header" id="headingEight">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseEight"
+                    aria-expanded="false" aria-controls="collapseEight">
+                    Where is the iPhone version of the app?
+                </button>
+            </h5>
+        </div>
+        <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
+            <div class="card-body">We're working hard on it.
+            </div>
+        </div>
+    </div>
 
-<h4>Who will be able to access my medical history?</h4>
-
-<p>Your static information will be available to everyone provided your &lsquo;id&rsquo;. Your dynamic information will only be visible to you and doctors.</p>
-
-<h4>Where is the iPhone version of the app?</h4>
-
-<p>We're working hard on it.</p>
-
-<h4>Can I book an appointment through E-HealthCard?</h4>
-
-<p>Not currently, but we're working on it.</p>
+    <div class="card mb-2">
+        <div class="card-header" id="headingNine">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseNine"
+                    aria-expanded="false" aria-controls="collapseNine">
+                    Can I book an appointment through E-HealthCard?
+                </button>
+            </h5>
+        </div>
+        <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
+            <div class="card-body">Not currently, but we're working on it.
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
