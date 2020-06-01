@@ -186,4 +186,4 @@ def qrcode():
 
     path = qrcode_path(qrcode_data(user, static_info))
 
-    return jsonify({'path': path})
+    return jsonify({'path': path[1:]})
