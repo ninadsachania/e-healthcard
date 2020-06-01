@@ -6,6 +6,7 @@ from app.api.errors import error_response, bad_request
 from app.api.auth import token_auth
 from qrcode import update_qrcode
 from app.email import send_password_reset_email
+from qrcode import qrcode_data, make_qrcode, qrcode_path
 
 
 @bp.route('/users', methods=['GET'])
@@ -83,7 +84,9 @@ def update_user():
             unknown_keys.append(key)
             return bad_request("Unknown key: {}".format(key))
 
-    update_qrcode(user.id)
+    info = StaticInformation.query.filter_by(user_id=user.id).first()
+    if info:
+        update_qrcode(user.id)
     db.session.commit()
     return jsonify(g.current_user.to_dict())
 
@@ -170,3 +173,17 @@ def reset_password_request():
 
     send_password_reset_email(user)
     return jsonify({'message': 'Check your email for instructions to reset your password.'})
+
+
+@bp.route('/users/qrcode', methods=['POST'])
+@token_auth.login_required
+def qrcode():
+    user = g.current_user
+    static_info = StaticInformation.query.filter_by(user_id=user.id).first()
+
+    if not static_info:
+        return error_response(400, 'To generate a QR code first fill out your static information.')
+
+    path = qrcode_path(qrcode_data(user, static_info))
+
+    return jsonify({'path': path})
