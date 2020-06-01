@@ -7,6 +7,7 @@ from app.api.auth import token_auth
 from qrcode import update_qrcode
 from app.email import send_password_reset_email
 from qrcode import qrcode_data, make_qrcode, qrcode_path
+from datetime import datetime
 
 
 @bp.route('/users', methods=['GET'])
@@ -124,7 +125,11 @@ def update_static_information():
 
     for key, value in data.items():
         if hasattr(static_info, key):
-            setattr(static_info, key, value)
+            if key == 'dob':
+                date = datetime.strptime(value, '%Y-%m-%d')
+                setattr(static_info, key, date)
+            else:
+                setattr(static_info, key, value)
         else:
             return bad_request("Unknown key: {}".format(key))
 
