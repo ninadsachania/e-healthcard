@@ -57,6 +57,7 @@ def login():
 
 @app.route('/user/profile')
 @login_required
+@check_email_confirmed
 def account():
     return render_template('account.html', title='Profile')
 
@@ -168,7 +169,9 @@ def edit_profile():
         db.session.commit()
 
         # Update the QR code of the user
-        update_qrcode(current_user.id)
+        info = StaticInformation.query.filter_by(user_id=current_user.id).first()
+        if info:
+            update_qrcode(current_user.id)
 
         flash('Your changes have been updated!')
 
@@ -315,7 +318,6 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
 
         if user:
-            flash('DEBUGGING: Correct email!')
             send_password_reset_email(user)
         flash('Check your email for instructions to reset your password')
         return redirect(url_for('login'))
@@ -425,6 +427,7 @@ def doctor_profile():
     doctor = Doctor.query.filter_by(user_id=current_user.id).first()
 
     data = {
+        'doctor_id': doctor.doctor_id,
         'hospital_name': doctor.hospital_name,
         'designation': doctor.designation,
         'is_verified': doctor.verified
@@ -596,6 +599,7 @@ def view_all_records():
 
 @app.route('/admin')
 @login_required
+@check_email_confirmed
 @is_admin
 def admin():
     doctors = Doctor.query.all()
@@ -604,6 +608,7 @@ def admin():
 
 @app.route('/admin/verify', methods=['POST'])
 @login_required
+@check_email_confirmed
 @is_admin
 def verify_doctors():
     args = request.get_json()
