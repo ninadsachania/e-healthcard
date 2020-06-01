@@ -123,6 +123,24 @@ def update_static_information():
     static_info = StaticInformation.query.filter_by(user_id=user.id).first()
     data = request.get_json() or {}
 
+    if not static_info:
+        info = StaticInformation(
+            user_id=user.id,
+            gender=data['gender'],
+            dob=datetime.strptime(data['dob'], '%Y-%m-%d'),
+            emergency_contact=data['emergency_contact'],
+            height=data['height'],
+            weight=data['weight'],
+            bloodgroup=data['bloodgroup'],
+            allergies=data['allergies'],
+            current_medication=data['current_medication']
+        )
+
+        db.session.add(info)
+        db.session.commit()
+
+        return jsonify({'message': 'Static information has been created.'})
+
     for key, value in data.items():
         if hasattr(static_info, key):
             if key == 'dob':
