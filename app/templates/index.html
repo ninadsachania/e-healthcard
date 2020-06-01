@@ -1,5 +1,50 @@
 {% extends 'base.html' %}
 
+
+
 {% block content %}
-    <h1 class="display-4">E-HealthCard</h1>
+<main role="main">
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">E-HealthCard</h1>
+      <p>E-HealthCard digitizes healthcare information for all healthcare consumers and providers globally.</p>
+      <p><a class="btn btn-primary btn-lg mt-2" target='_blank' href="{{ url_for('about') }}" role="button">Learn more &raquo;</a></p>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+      <div class="col-md-4">
+        <h2>Team</h2>
+        <p>E-HealthCard has a vibrant and young team that is passionate about changing the way healthcare is managed across the world. Our vision is to bring equality in healthcare delivery through wellness for mankind beyond medicine.</p>
+        <p><a class="btn btn-secondary" href="{{ url_for('contact') }}" role="button">Find out more &raquo;</a></p>
+      </div>
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4">
+        <h2>Mission</h2>
+        <p>E-HealthCard is an organisation that assimilates resources which helps to create a health ecosystem that brings connectivity for unified health management and deliverys.</p>
+        <p><a class="btn btn-secondary" href="{{ url_for('register') }}" role="button">Register &raquo;</a></p>
+      </div>
+    </div>
+
+    <hr>
+
+  </div> <!-- /container -->
+
+</main>
+    <!-- <h1 class="display-4">E-HealthCard</h1>
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+  
+        <main role="main" class="inner cover">
+          <h1 class="cover-heading">Cover your page.</h1>
+          <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+          <p class="lead">
+            <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
+          </p>
+        </main>
+      </div> -->
 {% endblock %}
