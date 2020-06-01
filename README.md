@@ -93,9 +93,13 @@ If you make a call and a token is already present then that token is returned in
 
 **Response**
 
-- `204 NO CONTENT` on success
+- `200 OK` on success
 
-No content in the body.
+```json
+{
+    "message": "Token delete successfully."
+}
+```
 
 - `401 UNAUTHORIZED` when the token is wrong on not present
 
