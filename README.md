@@ -408,3 +408,32 @@ The response will contain the user's details.
     "message": "Sorry! Email 'xyz@gmail.com' not found."
 }
 ```
+
+### Getting QR Code
+
+**Definition**
+
+`POST /api/users/qrcode` (Authorization required)
+
+**Arguments**
+
+No arguments required.
+
+**Response**
+
+- `200 OK` on success
+
+```json
+{
+    "path": "/static/qrcodes/5.png"
+}
+```
+
+- `400 BAD REQUEST` if the user's has not filled out their static information
+
+```json
+{
+    "error": "Bad Request",
+    "message": "To generate a QR code first fill out your static information."
+}
+```
