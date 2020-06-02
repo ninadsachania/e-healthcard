@@ -1,13 +1,14 @@
 from app.api import bp
-from flask import request, jsonify, g, url_for
+from flask import request, jsonify, g, url_for, render_template
 from app.models import User, Metadata, StaticInformation, DynamicInformation
-from app import db
+from app import db, app
 from app.api.errors import error_response, bad_request
 from app.api.auth import token_auth
 from qrcode import update_qrcode
 from app.email import send_password_reset_email
 from qrcode import qrcode_data, make_qrcode, qrcode_path
 from datetime import datetime
+from app.email import send_password_reset_email, send_email
 
 
 @bp.route('/users', methods=['GET'])
@@ -58,6 +59,13 @@ def create_user():
     )
     db.session.add(m)
     db.session.commit()
+
+    token = user.generate_confirmation_token()
+    confirm_url = url_for('confirm_email', token=token, _external=True)
+    html = render_template('email/activate_account.html', confirm_url=confirm_url)
+    text_body = render_template('email/activate_account.txt', confirm_url=confirm_url)
+    subject = 'Please confirm your email'
+    send_email(subject, app.config['ADMINS'][0], [user.email], text_body, html)
 
     response = jsonify(user.to_dict())
     response.status_code = 201
