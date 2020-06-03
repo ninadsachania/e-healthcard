@@ -8,7 +8,6 @@ import sys
 domain = 'https://68.183.87.252'
 url = '{}/doctor/add_record/rfid/'.format(domain)
 
-print(sys.platform)
 if sys.platform == 'win32':
     port = 'COM10'
 elif sys.platform == 'linux':
