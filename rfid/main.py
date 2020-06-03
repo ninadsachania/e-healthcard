@@ -5,9 +5,15 @@ import webbrowser
 import sys
 
 # url where the data will go
-url = 'http://localhost:5000/doctor/add_record/rfid/'
+domain = 'https://68.183.87.252'
+url = '{}/doctor/add_record/rfid/'.format(domain)
 
-port = 'COM10'
+print(sys.platform)
+if sys.platform == 'win32':
+    port = 'COM10'
+elif sys.platform == 'linux':
+    port = '/dev/ttyACM0'
+
 baudrate = 9600
 
 try:
@@ -23,7 +29,7 @@ while True:
     ser.reset_output_buffer()
     ser.reset_input_buffer()
 
-    print("Please keep your card nearby: ")
+    print('Please keep your card nearby: ')
 
     while True:
         line = ser.readline().decode('utf-8')
@@ -31,11 +37,10 @@ while True:
             rfid_uid = line.strip()  # remove trailing whitespaces and newline
             break
 
-    print()
-    print('UID: {}'.format(rfid_uid))
-    ans = input("Is this okay? (y/n): ")
+    print('\nUID: {}'.format(rfid_uid))
+    answer = input('Is this okay? (y/n): ')
 
-    if ans.lower() == 'y':
+    if answer.lower() == 'y':
         # open the link in the browser
         webbrowser.open('{}?rfid={}'.format(url, rfid_uid))
 
