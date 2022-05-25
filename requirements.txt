@@ -10,5 +10,5 @@ Flask_WTF==0.14.2
 Flask_HTTPAuth==3.3.0
 WTForms==2.2.1
 segno==1.0.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 pyserial==3.4
