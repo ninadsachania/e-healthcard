@@ -20,7 +20,7 @@ def qrcode_data(user, static_info):
         'phone_number': user.phone_number,
         'emergency_contact_number': static_info.emergency_contact,
         'address': user.address,
-        'boodgroup': static_info.bloodgroup
+        'bloodgroup': static_info.bloodgroup
     }
 
 

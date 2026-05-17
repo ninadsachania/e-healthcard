@@ -25,6 +25,21 @@ def get_user():
 def create_user():
     data = request.get_json() or {}
 
+    required_fields = ['firstname', 'middlename', 'lastname', 'email',
+                       'aadhar_card', 'phone_number', 'address', 'password']
+    for field in required_fields:
+        if field not in data:
+            return bad_request("Missing required field: '{}'".format(field))
+
+    if User.query.filter_by(email=data['email']).first() is not None:
+        return error_response(409, "Sorry! This email is already in use")
+
+    if User.query.filter_by(phone_number=data['phone_number']).first() is not None:
+        return error_response(409, 'Sorry! This phone number is already in use.')
+
+    if User.query.filter_by(aadhar_card=data['aadhar_card']).first() is not None:
+        return error_response(409, 'Sorry! This aadhar number is already in use.')
+
     user = User(
         firstname=data['firstname'],
         middlename=data['middlename'],
@@ -34,22 +49,6 @@ def create_user():
         phone_number=data['phone_number'],
         address=data['address']
     )
-
-    u = User.query.filter_by(email=data['email']).first()
-
-    if u is not None:
-        return error_response(409, "Sorry! This email is already in use")
-
-    u = User.query.filter_by(phone_number=data['phone_number']).first()
-
-    if u is not None:
-        return error_response(409, 'Sorry! This phone number is already in use.')
-
-    u = User.query.filter_by(aadhar_card=data['aadhar_card']).first()
-
-    if u is not None:
-        return error_response(409, 'Sorry! This aadhar number is already in use.')
-
     user.set_password(data['password'])
     db.session.add(user)
     db.session.flush()
@@ -197,6 +196,9 @@ def changepw():
 @bp.route('/users/reset_password_request', methods=['POST'])
 def reset_password_request():
     data = request.get_json() or {}
+
+    if 'email' not in data:
+        return bad_request("Missing required field: 'email'")
 
     user = User.query.filter_by(email=data['email']).first()
     if not user:

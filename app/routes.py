@@ -38,7 +38,7 @@ def login():
             flash('Invalid email or password!')
             return redirect(url_for('login'))
 
-        m = Metadata.query.filter_by(id=user.id).first()
+        m = Metadata.query.filter_by(user_id=user.id).first()
         m.last_logged_in = datetime.utcnow()
 
         db.session.add(m)
@@ -110,10 +110,10 @@ def register():
 @app.route('/confirm/<token>')
 @login_required
 def confirm_email(token):
-    try:
-        email = User.confirm_token(token)
-    except:
-        flash('The confirmation link is invalid or expired.', 'danger')
+    email = User.confirm_token(token)
+    if not email:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+        return redirect(url_for('index'))
 
     user = User.query.filter_by(email=email).first_or_404()
     if user.confirmed:
@@ -162,7 +162,7 @@ def edit_profile():
         current_user.lastname = form.lastname.data
         current_user.address = form.address.data
 
-        m = Metadata.query.filter_by(id=current_user.id).first()
+        m = Metadata.query.filter_by(user_id=current_user.id).first()
         m.last_modified_on = datetime.utcnow()
 
         db.session.add(m)
@@ -198,7 +198,7 @@ def change_password():
             flash('Congratulations! Password successfully changed.')
             return redirect(url_for('change_password'))
 
-        flash('Current password incorrent. Please try again.')
+        flash('Current password incorrect. Please try again.')
         return redirect(url_for('change_password'))
 
     return render_template('change_password.html', title="Change Password", form=form)
@@ -218,6 +218,7 @@ def static_info():
 
 
 @app.route('/user/dynamic_info')
+@login_required
 def dynamic_info():
     dynamic_records = DynamicInformation.query.filter_by(user_id=current_user.id).all()
 
@@ -230,7 +231,7 @@ def dynamic_info():
 
         records.append({
             'id': record.id,
-            'doctor_name': "Dr, {} {}, {}".format(user.firstname, user.lastname, doctor.designation),
+            'doctor_name': "Dr. {} {}, {}".format(user.firstname, user.lastname, doctor.designation),
             'hospital_name': doctor.hospital_name,
             'symptoms': record.symptoms,
             'diagnosis': record.diagnosis,
@@ -261,7 +262,7 @@ def edit_static_info():
             current_info.allergies = form.allergies.data
             current_info.current_medication = form.current_medication.data
 
-            m = Metadata.query.filter_by(id=current_user.id).first()
+            m = Metadata.query.filter_by(user_id=current_user.id).first()
             m.static_info_last_modified_on = datetime.utcnow()
 
             db.session.add(m)
@@ -283,7 +284,7 @@ def edit_static_info():
                 allergies=form.allergies.data,
                 current_medication=form.current_medication.data
             )
-            m = Metadata.query.filter_by(id=current_user.id).first()
+            m = Metadata.query.filter_by(user_id=current_user.id).first()
             m.static_info_last_modified_on = datetime.utcnow()
 
             db.session.add(info)
@@ -389,7 +390,7 @@ def qrcode():
 @app.route('/doctor/')
 def for_doctors():
     # only want to show some links if the user is a doctor
-    is_doctor = Doctor.query.filter_by(user_id=current_user.id).first()
+    is_doctor = Doctor.query.filter_by(user_id=current_user.id).first() if current_user.is_authenticated else None
 
     return render_template('for_doctors.html', is_doctor=is_doctor, title='Doctor')
 
@@ -507,6 +508,9 @@ def add_record_from_rfid():
 
         db.session.add(dynamic_info)
         db.session.commit()
+
+        flash('Data successfully added.')
+        return redirect(url_for('add_record_from_rfid'))
 
     return render_template('add_record_rfid.html', form=form, title='[RFID] New Record')
 

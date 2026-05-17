@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"d:\\\\Dropbox\\\\Projects\\\\opensource\\\\projects\\\\e-healthcard\" -Recurse -Force)",
+      "Bash(Select-Object FullName)"
+    ]
+  }
+}
