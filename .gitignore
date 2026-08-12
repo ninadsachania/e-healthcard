@@ -1,2 +1,3 @@
 __pycache__/
-app/static/qrcodes/
+app/static/qrcodes/*
+!app/static/qrcodes/.gitkeep

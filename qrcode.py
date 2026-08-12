@@ -34,6 +34,7 @@ def make_qrcode(information: {}):
         '{}.png'.format(information['id'])
     )
 
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     return qrcode.save(path, scale=5)
 
 
