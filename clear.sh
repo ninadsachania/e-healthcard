@@ -3,6 +3,6 @@
 rm -rf ./migrations
 rm -rf app.db
 
-flask db init
-flask db migrate
-flask db upgrade
+uv run flask db init
+uv run flask db migrate
+uv run flask db upgrade

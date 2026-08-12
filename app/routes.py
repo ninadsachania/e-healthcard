@@ -7,7 +7,7 @@ from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
 from app.models import User, StaticInformation, Metadata, Doctor, \
     DynamicInformation
 from flask_login import current_user, login_user, logout_user, login_required
-from werkzeug.urls import url_parse
+from urllib.parse import urlsplit
 from datetime import datetime
 from app.email import send_password_reset_email, send_email
 from qrcode import qrcode_path, update_qrcode, qrcode_data, make_qrcode
@@ -47,7 +47,7 @@ def login():
         login_user(user, remember=form.remember_me.data)
 
         next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
+        if not next_page or urlsplit(next_page).netloc != '':
             # 'netloc' is the first level domain (www.example.com)
             return redirect(url_for('unconfirmed'))
         return redirect(next_page)
