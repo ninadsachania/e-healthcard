@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, \
-    SelectField, IntegerField
+    SelectField, IntegerField, EmailField, TelField, DateField
 from wtforms.validators import DataRequired, EqualTo, Email, ValidationError, Length
-from wtforms.fields.html5 import EmailField, TelField, DateField
 from app.models import User
 from app.verify import verify_aadhar_card
 

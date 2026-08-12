@@ -2,8 +2,10 @@
 
 ## Build Instructions
 
+This project uses [uv](https://docs.astral.sh/uv/) for dependency management. Install uv, then sync dependencies:
+
 ```bash
-$ pip3 install -r requirements.txt
+$ uv sync
 ```
 
 Then execute `run.sh` file:

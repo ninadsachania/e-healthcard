@@ -1,0 +1,25 @@
+[project]
+name = "e-healthcard"
+version = "0.1.0"
+description = "E-HealthCard: digital health record system with QR code and RFID lookup"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.14.1",
+    "flask>=3.0.3",
+    "flask-httpauth>=4.8.1",
+    "flask-login>=0.6.3",
+    "flask-mail>=0.10.0",
+    "flask-migrate>=4.1.0",
+    "flask-sqlalchemy>=3.1.1",
+    "flask-wtf>=1.2.1",
+    "pyjwt>=2.9.0",
+    "pyserial>=3.5",
+    "segno>=1.6.6",
+    "sqlalchemy>=2.0.49",
+    "werkzeug>=3.0.6",
+    "wtforms>=3.1.2",
+]
+
+[tool.uv]
+package = false
